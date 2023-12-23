@@ -12,6 +12,7 @@
         android:id="@+id/textHeader"
         tools:ignore="HardcodedText,MissingConstraints"
 
+        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login:"
@@ -63,13 +64,14 @@
         android:id="@+id/textRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        android:layout_marginTop="5dp"
-        android:text="Don't have account?"
+        android:gravity="center"
+        android:text="create account?"
         android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
-        tools:ignore="MissingConstraints" />
 
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
+        app:layout_constraintVertical_bias="0.061"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="134dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
