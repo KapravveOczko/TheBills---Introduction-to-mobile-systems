@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         buttonLogout = findViewById(R.id.buttonLogout);
+        buttonCreateRoom = findViewById(R.id.buttonCreateRoom);
         textViewEmail = findViewById(R.id.textViewEmail);
         user = auth.getCurrentUser();
         if (user == null){
@@ -52,13 +53,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//
-//        buttonCreateRoom.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openDialog();
-//            }
-//        });
+
+        buttonCreateRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        });
     }
 
     public void openDialog(){

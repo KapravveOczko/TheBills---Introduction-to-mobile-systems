@@ -46,7 +46,7 @@
         android:hint="password"
         android:textSize="25dp"
 
-
+        android:inputType="textPassword"
 
         app:layout_constraintTop_toBottomOf="@+id/textFieldEmail"
         tools:ignore="MissingConstraints"
