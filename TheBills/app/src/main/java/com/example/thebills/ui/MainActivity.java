@@ -10,9 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.thebills.R;
-import com.example.thebills.Room;
+import com.example.thebills.RoomManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDialog(){
-        Room room = new Room();
+        RoomManager room = new RoomManager();
         room.show(getSupportFragmentManager(), "create room dialog");
     }
 }
