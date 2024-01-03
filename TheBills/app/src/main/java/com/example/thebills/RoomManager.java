@@ -3,17 +3,22 @@ package com.example.thebills;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.example.thebills.ui.Room;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,12 +74,20 @@ public class RoomManager extends AppCompatDialogFragment {
 
         if (!roomName.isEmpty() && currentUser != null) {
 
-            DatabaseReference roomsRef = FirebaseDatabase.getInstance().getReference("rooms");
+            DatabaseReference roomsRef = FirebaseDatabase.getInstance("https://thebills-66df6-default-rtdb.europe-west1.firebasedatabase.app").getReference("rooms");
             String roomKey = roomsRef.push().getKey();
             RoomTuple newRoom = new RoomTuple(roomKey, roomName, currentUser.getUid());
-            roomsRef.child(roomKey).setValue(newRoom);
+            roomsRef.child(roomKey).setValue(newRoom).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    Log.d("TheBills - createNewRoom", "created room: " + newRoom.toString());
+//                    Intent intent = new Intent(getApplicationContext(), Room.class);
+//                    startActivity(intent);
+//                    finish();
+                }
+            });
 
-            Log.d("TheBills - createNewRoom", "created room: " + newRoom.toString());
+            Log.d("TheBills - createNewRoom", "created room not worked");
         }
     }
 }
