@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RoomManager extends AppCompatDialogFragment {
@@ -89,7 +90,9 @@ public class RoomManager extends AppCompatDialogFragment {
 
         if (!roomName.isEmpty() && currentUser != null) {
 
-            DatabaseReference roomsRef = FirebaseDatabase.getInstance("https://thebills-66df6-default-rtdb.europe-west1.firebasedatabase.app").getReference("rooms");
+            DatabaseReference roomsRef = FirebaseDatabase.getInstance("https://thebills-66df6-default-rtdb.europe-west1.firebasedatabase.app")
+                    .getReference("rooms");
+
             String roomKey = roomsRef.push().getKey();
             RoomTuple newRoom = new RoomTuple(roomKey, roomName, currentUser.getUid());
             roomsRef.child(roomKey).setValue(newRoom).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -101,6 +104,15 @@ public class RoomManager extends AppCompatDialogFragment {
                         usersRef.child(entry.getKey()).setValue(entry.getValue());
                     }
 
+                    DatabaseReference appUsersRef = FirebaseDatabase.getInstance("https://thebills-66df6-default-rtdb.europe-west1.firebasedatabase.app")
+                            .getReference("users")
+                            .child(currentUser.getUid())
+                            .child("rooms");
+
+                    Map<String, Object> updateMap = new HashMap<>();
+                    updateMap.put(roomKey, roomName);
+                    appUsersRef.updateChildren(updateMap);
+
                     Log.d("TheBills - createNewRoom", "created room: " + newRoom.toString());
                     moveToRoomActivity();
                 }
@@ -111,13 +123,6 @@ public class RoomManager extends AppCompatDialogFragment {
 
     }
 
-//    private void moveToRoomActivity() {
-//
-//        Intent intent = new Intent(this.context, Room.class);
-//        startActivity(intent);
-////        zamknięcie okna dialogowego
-////        dismiss();
-//    }
 
     private void moveToRoomActivity() {
         if (context != null && context instanceof AppCompatActivity) {
