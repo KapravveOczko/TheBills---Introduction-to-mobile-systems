@@ -1,10 +1,18 @@
 package com.example.thebills;
 
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class RoomTuple {
 
     private String roomId;
     private String roomName;
     private String ownerId;
+    private Timestamp createDate;
+    private Map<String, Boolean> users = new HashMap<>();
+
     // macierz wydatków
     // lista rachunków
 
@@ -15,6 +23,8 @@ public class RoomTuple {
         this.roomId = roomId;
         this.roomName = roomName;
         this.ownerId = ownerId;
+        this.createDate = new Timestamp(System.currentTimeMillis());
+        this.users.put(ownerId, true);
     }
 
     public String getRoomId() {
@@ -27,6 +37,18 @@ public class RoomTuple {
 
     public String getOwnerId() {
         return ownerId;
+    }
+
+    public Timestamp getCreateDate() {
+        return createDate;
+    }
+
+    public Map<String, Boolean> getUsers() {
+        return users;
+    }
+
+    public void addUser(String user){
+        this.users.putIfAbsent(user, true);
     }
 
 }

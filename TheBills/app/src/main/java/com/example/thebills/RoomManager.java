@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,13 +16,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.thebills.ui.Room;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.sql.Timestamp;
+import java.util.Map;
 
 public class RoomManager extends AppCompatDialogFragment {
 
@@ -70,7 +70,8 @@ public class RoomManager extends AppCompatDialogFragment {
      */
     public void createNewRoom() {
         String roomName = editTextRoomName.getText().toString().trim();
-        Log.d("TheBills - createNewRoom","process of room crating started");
+        Log.d("TheBills - createNewRoom", "process of room crating started");
+
 
         if (!roomName.isEmpty() && currentUser != null) {
 
@@ -80,14 +81,30 @@ public class RoomManager extends AppCompatDialogFragment {
             roomsRef.child(roomKey).setValue(newRoom).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
+
+                    DatabaseReference usersRef = roomsRef.child(roomKey).child("users");
+                    for (Map.Entry<String, Boolean> entry : newRoom.getUsers().entrySet()) {
+                        usersRef.child(entry.getKey()).setValue(entry.getValue());
+                    }
+
                     Log.d("TheBills - createNewRoom", "created room: " + newRoom.toString());
-//                    Intent intent = new Intent(getApplicationContext(), Room.class);
-//                    startActivity(intent);
-//                    finish();
+//                    moveToRoomActivity();
                 }
             });
 
             Log.d("TheBills - createNewRoom", "created room not worked");
         }
+
+    }
+
+    private void moveToRoomActivity() {
+        Intent intent = new Intent(getContext(), Room.class);
+        startActivity(intent);
+//        zamknięcie okna dialogowego
+        dismiss();
+    }
+
+    public void getRooms() {
+
     }
 }
