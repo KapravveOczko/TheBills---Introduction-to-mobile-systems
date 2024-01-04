@@ -2,6 +2,7 @@ package com.example.thebills;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.thebills.ui.Room;
@@ -30,6 +32,18 @@ public class RoomManager extends AppCompatDialogFragment {
     private EditText editTextRoomName;
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
+
+    private Context context;
+
+    @Nullable
+    @Override
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     @SuppressLint("MissingInflatedId")
     @NonNull
@@ -88,7 +102,7 @@ public class RoomManager extends AppCompatDialogFragment {
                     }
 
                     Log.d("TheBills - createNewRoom", "created room: " + newRoom.toString());
-//                    moveToRoomActivity();
+                    moveToRoomActivity();
                 }
             });
 
@@ -97,12 +111,21 @@ public class RoomManager extends AppCompatDialogFragment {
 
     }
 
+//    private void moveToRoomActivity() {
+//
+//        Intent intent = new Intent(this.context, Room.class);
+//        startActivity(intent);
+////        zamknięcie okna dialogowego
+////        dismiss();
+//    }
+
     private void moveToRoomActivity() {
-        Intent intent = new Intent(getContext(), Room.class);
-        startActivity(intent);
-//        zamknięcie okna dialogowego
-        dismiss();
+        if (context != null && context instanceof AppCompatActivity) {
+            Intent intent = new Intent(context, Room.class);
+            ((AppCompatActivity) context).startActivity(intent);
+        }
     }
+
 
     public void getRooms() {
 

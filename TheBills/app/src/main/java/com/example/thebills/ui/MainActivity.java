@@ -3,6 +3,7 @@ package com.example.thebills.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,12 +23,16 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewEmail;
     FirebaseUser user;
 
+    Context context;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        context = this;
 
         auth = FirebaseAuth.getInstance();
         buttonLogout = findViewById(R.id.buttonLogout);
@@ -63,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDialog(){
-        RoomManager room = new RoomManager();
-        room.show(getSupportFragmentManager(), "create room dialog");
+        RoomManager roomManager = new RoomManager();
+        roomManager.setContext(context);
+        roomManager.show(getSupportFragmentManager(), "create room dialog");
     }
 }
