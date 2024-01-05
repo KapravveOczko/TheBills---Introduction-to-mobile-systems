@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.thebills.R;
+import com.example.thebills.RoomManager;
 import com.example.thebills.RoomManagerCreateRoom;
 import com.example.thebills.RoomManagerJoinRoom;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewEmail;
     FirebaseUser user;
 
+    RoomManager roomManager;
     Context context;
 
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = this;
+        roomManager = new RoomManager();
 
         auth = FirebaseAuth.getInstance();
         buttonLogout = findViewById(R.id.buttonLogout);
@@ -78,14 +81,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDialogJoinRoom(){
-        RoomManagerJoinRoom roomManager = new RoomManagerJoinRoom();
-        roomManager.setContext(context);
-        roomManager.show(getSupportFragmentManager(), "join room dialog");
+        RoomManagerJoinRoom roomManagerJoinRoom = new RoomManagerJoinRoom();
+        roomManagerJoinRoom.setContext(context);
+        roomManagerJoinRoom.setRoomManager(roomManager);
+        roomManagerJoinRoom.show(getSupportFragmentManager(), "join room dialog");
     }
 
     public void openDialogCreateRoom(){
-        RoomManagerCreateRoom roomManager = new RoomManagerCreateRoom();
-        roomManager.setContext(context);
-        roomManager.show(getSupportFragmentManager(), "create room dialog");
+        RoomManagerCreateRoom roomManagerCreateRoom = new RoomManagerCreateRoom();
+        roomManagerCreateRoom.setContext(context);
+        roomManagerCreateRoom.setRoomManager(roomManager);
+        roomManagerCreateRoom.show(getSupportFragmentManager(), "create room dialog"); // Poprawiono literówkę
     }
+
 }
