@@ -68,5 +68,6 @@ public class RoomManagerJoinRoom extends AppCompatDialogFragment {
 
         if (!desiredRoomKey.isEmpty()) {
             roomManager.joinRoom(desiredRoomKey);
+            roomManager.moveToRoomActivity(this.context);
     }}
 }
