@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -96,5 +97,35 @@ public class RoomManager {
             }
         });
     }
+
+    public interface GetUserRoomsCallback {
+        void onRoomsReceived(Map<String, String> roomMap);
+        void onCancelled(String error);
+    }
+
+
+    public void getUserRooms(GetUserRoomsCallback callback) {
+        appUsersRef.child(currentUser.getUid()).child("rooms").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("TheBills - joinRoom", "query done");
+
+                GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {};
+                Map<String, String> dataMap = dataSnapshot.getValue(genericTypeIndicator);
+
+                if (dataMap != null) {
+                    Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
+                    callback.onRoomsReceived(dataMap);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("TheBills - joinRoom", "database error");
+                callback.onCancelled(databaseError.getMessage());
+            }
+        });
+    }
+
 
 }

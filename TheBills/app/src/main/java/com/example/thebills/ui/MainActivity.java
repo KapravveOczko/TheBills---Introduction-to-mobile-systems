@@ -1,11 +1,14 @@
 package com.example.thebills.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,8 +17,11 @@ import com.example.thebills.R;
 import com.example.thebills.RoomManager;
 import com.example.thebills.RoomManagerCreateRoom;
 import com.example.thebills.RoomManagerJoinRoom;
+import com.example.thebills.RoomManagerRecycleViewAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
         buttonJoinRoom = findViewById(R.id.buttonJoinRoom);
         textViewEmail = findViewById(R.id.textViewEmail);
         user = auth.getCurrentUser();
+
+        RecyclerView recyclerView = findViewById(R.id.roomRecycleView);
+
+
+
         if (user == null){
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
@@ -53,6 +64,21 @@ public class MainActivity extends AppCompatActivity {
         else{
             textViewEmail.setText(user.getEmail());
         }
+
+        roomManager.getUserRooms(new RoomManager.GetUserRoomsCallback() {
+            @Override
+            public void onRoomsReceived(Map<String, String> roomMap) {
+                RoomManagerRecycleViewAdapter adapter = new RoomManagerRecycleViewAdapter(context, roomMap);
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                recyclerView.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(String error) {
+                Log.d("MainActivity", "Błąd: " + error);
+            }
+        });
+
 
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
