@@ -11,9 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.thebills.R;
+import com.example.thebills.RecycleViewEvent;
 import com.example.thebills.RoomManager;
 import com.example.thebills.RoomManagerCreateRoom;
 import com.example.thebills.RoomManagerJoinRoom;
@@ -21,19 +24,25 @@ import com.example.thebills.RoomManagerRecycleViewAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecycleViewEvent {
 
-    FirebaseAuth auth;
     Button buttonLogout;
     Button buttonCreateRoom;
     Button buttonJoinRoom;
     TextView textViewEmail;
-    FirebaseUser user;
+    ProgressBar progressBar;
 
+
+    FirebaseAuth auth;
+    FirebaseUser user;
     RoomManager roomManager;
     Context context;
+
+    List<String> keys;
 
 
     @SuppressLint("MissingInflatedId")
@@ -44,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
         context = this;
         roomManager = new RoomManager();
+
+        progressBar = findViewById(R.id.progressBarRooms);
+        progressBar.setVisibility(View.VISIBLE);
 
         auth = FirebaseAuth.getInstance();
         buttonLogout = findViewById(R.id.buttonLogout);
@@ -68,7 +80,9 @@ public class MainActivity extends AppCompatActivity {
         roomManager.getUserRooms(new RoomManager.GetUserRoomsCallback() {
             @Override
             public void onRoomsReceived(Map<String, String> roomMap) {
-                RoomManagerRecycleViewAdapter adapter = new RoomManagerRecycleViewAdapter(context, roomMap);
+                progressBar.setVisibility(View.INVISIBLE);
+                keys = new ArrayList<>(roomMap.keySet());
+                RoomManagerRecycleViewAdapter adapter = new RoomManagerRecycleViewAdapter(context, roomMap, MainActivity.this);
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 recyclerView.setAdapter(adapter);
@@ -78,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("MainActivity", "Błąd: " + error);
             }
         });
-
 
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +130,12 @@ public class MainActivity extends AppCompatActivity {
         RoomManagerCreateRoom roomManagerCreateRoom = new RoomManagerCreateRoom();
         roomManagerCreateRoom.setContext(context);
         roomManagerCreateRoom.setRoomManager(roomManager);
-        roomManagerCreateRoom.show(getSupportFragmentManager(), "create room dialog"); // Poprawiono literówkę
+        roomManagerCreateRoom.show(getSupportFragmentManager(), "create room dialog");
     }
 
+    @Override
+    public void onItemClick(int position) {
+        String roomKey = keys.get(position);
+        Toast.makeText(this, "entering room: " + roomKey, Toast.LENGTH_SHORT).show();
+    }
 }

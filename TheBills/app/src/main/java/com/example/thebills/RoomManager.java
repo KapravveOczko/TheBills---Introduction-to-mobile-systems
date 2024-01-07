@@ -34,8 +34,20 @@ public class RoomManager {
 
     private Context context;
 
+
+    private Map<String, String> dataMap = null;
+
     public void setContext(Context context) {
         this.context = context;
+    }
+
+
+    public Map<String, String> getDataMap() {
+        return dataMap;
+    }
+
+    public void setDataMap(Map<String, String> dataMap) {
+        this.dataMap = dataMap;
     }
 
     public RoomManager() {

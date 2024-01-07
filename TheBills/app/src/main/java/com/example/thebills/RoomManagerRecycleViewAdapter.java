@@ -4,9 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -15,12 +17,14 @@ import java.util.Map;
 
 public class RoomManagerRecycleViewAdapter extends RecyclerView.Adapter<RoomManagerRecycleViewAdapter.MyViewHolder> {
 
-    Context context;
-    Map<String,String> roomMap;
+    private Context context;
+    private Map<String,String> roomMap;
+    private RecycleViewEvent listener;
 
-    public RoomManagerRecycleViewAdapter(Context context, Map<String, String> roomMap) {
+    public RoomManagerRecycleViewAdapter(Context context, Map<String, String> roomMap, RecycleViewEvent listener) {
         this.context = context;
         this.roomMap = roomMap;
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,6 +44,15 @@ public class RoomManagerRecycleViewAdapter extends RecyclerView.Adapter<RoomMana
 
         holder.roomName.setText(name);
         holder.roomKey.setText(key);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(holder.getAdapterPosition());
+            }
+        });
+
+
     }
 
     @Override
@@ -47,16 +60,21 @@ public class RoomManagerRecycleViewAdapter extends RecyclerView.Adapter<RoomMana
         return roomMap.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        TextView roomName;
-        TextView roomKey;
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView roomName;
+        public TextView roomKey;
+        public CardView cardView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             roomName = itemView.findViewById(R.id.textViewRoomName);
             roomKey = itemView.findViewById(R.id.textViewRoomKey);
+            cardView = itemView.findViewById(R.id.cardViewRecycleViewRooms);
+
         }
+
     }
 }
