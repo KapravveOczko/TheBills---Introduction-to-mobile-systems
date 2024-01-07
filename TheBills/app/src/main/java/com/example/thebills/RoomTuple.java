@@ -14,7 +14,7 @@ public class RoomTuple {
     private Map<String, Boolean> users = new HashMap<>();
 
     // macierz wydatków
-    // lista rachunków
+    // lista rachunków <- tworzona w momęcie dodania pierwszego rachunku
 
     public RoomTuple() {
     }

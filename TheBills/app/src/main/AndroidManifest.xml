@@ -13,6 +13,12 @@
         android:theme="@style/Theme.TheBills"
         tools:targetApi="31">
         <activity
+            android:name=".ui.Bill"
+            android:exported="false" />
+        <activity
+            android:name=".ui.BillsView"
+            android:exported="false" />
+        <activity
             android:name=".ui.Room"
             android:exported="false" />
         <activity

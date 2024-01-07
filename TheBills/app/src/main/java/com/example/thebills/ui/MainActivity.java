@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thebills.R;
-import com.example.thebills.RecycleViewEvent;
+import com.example.thebills.RoomRecycleViewEvent;
 import com.example.thebills.RoomManager;
 import com.example.thebills.RoomManagerCreateRoom;
 import com.example.thebills.RoomManagerJoinRoom;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements RecycleViewEvent {
+public class MainActivity extends AppCompatActivity implements RoomRecycleViewEvent {
 
     Button buttonLogout;
     Button buttonCreateRoom;
@@ -64,34 +64,35 @@ public class MainActivity extends AppCompatActivity implements RecycleViewEvent 
         textViewEmail = findViewById(R.id.textViewEmail);
         user = auth.getCurrentUser();
 
-        RecyclerView recyclerView = findViewById(R.id.roomRecycleView);
+//        RecyclerView recyclerView = findViewById(R.id.roomRecycleView);
 
 
-
-        if (user == null){
+        if (user == null) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
-        }
-        else{
+        } else {
             textViewEmail.setText(user.getEmail());
         }
 
-        roomManager.getUserRooms(new RoomManager.GetUserRoomsCallback() {
-            @Override
-            public void onRoomsReceived(Map<String, String> roomMap) {
-                progressBar.setVisibility(View.INVISIBLE);
-                keys = new ArrayList<>(roomMap.keySet());
-                RoomManagerRecycleViewAdapter adapter = new RoomManagerRecycleViewAdapter(context, roomMap, MainActivity.this);
+//        roomManager.getUserRooms(new RoomManager.GetUserRoomsCallback() {
+//            @Override
+//            public void onRoomsReceived(Map<String, String> roomMap) {
+//                progressBar.setVisibility(View.INVISIBLE);
+//                keys = new ArrayList<>(roomMap.keySet());
+//                RoomManagerRecycleViewAdapter adapter = new RoomManagerRecycleViewAdapter(context, roomMap, MainActivity.this);
+//
+//                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//                recyclerView.setAdapter(adapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(String error) {
+//                Log.d("MainActivity", "Błąd: " + error);
+//            }
+//        });
 
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setAdapter(adapter);
-            }
-            @Override
-            public void onCancelled(String error) {
-                Log.d("MainActivity", "Błąd: " + error);
-            }
-        });
+        setRecycleView();
 
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,14 +120,28 @@ public class MainActivity extends AppCompatActivity implements RecycleViewEvent 
         });
     }
 
-    public void openDialogJoinRoom(){
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshData();
+    }
+
+    private void refreshData() {
+        RecyclerView recyclerView = findViewById(R.id.roomRecycleView);
+        if (recyclerView != null) {
+            setRecycleView();
+        }
+    }
+
+
+    public void openDialogJoinRoom() {
         RoomManagerJoinRoom roomManagerJoinRoom = new RoomManagerJoinRoom();
         roomManagerJoinRoom.setContext(context);
         roomManagerJoinRoom.setRoomManager(roomManager);
         roomManagerJoinRoom.show(getSupportFragmentManager(), "join room dialog");
     }
 
-    public void openDialogCreateRoom(){
+    public void openDialogCreateRoom() {
         RoomManagerCreateRoom roomManagerCreateRoom = new RoomManagerCreateRoom();
         roomManagerCreateRoom.setContext(context);
         roomManagerCreateRoom.setRoomManager(roomManager);
@@ -137,5 +152,27 @@ public class MainActivity extends AppCompatActivity implements RecycleViewEvent 
     public void onItemClick(int position) {
         String roomKey = keys.get(position);
         Toast.makeText(this, "entering room: " + roomKey, Toast.LENGTH_SHORT).show();
+        roomManager.moveToRoomActivity2(context, roomKey);
+    }
+
+    public void setRecycleView() {
+        roomManager.getUserRooms(new RoomManager.GetUserRoomsCallback() {
+
+            RecyclerView recyclerView = findViewById(R.id.roomRecycleView);
+            @Override
+            public void onRoomsReceived(Map<String, String> roomMap) {
+                progressBar.setVisibility(View.INVISIBLE);
+                keys = new ArrayList<>(roomMap.keySet());
+                RoomManagerRecycleViewAdapter adapter = new RoomManagerRecycleViewAdapter(context, roomMap, MainActivity.this);
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(String error) {
+                Log.d("MainActivity", "Błąd: " + error);
+            }
+        });
     }
 }

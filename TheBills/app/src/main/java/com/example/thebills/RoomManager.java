@@ -63,6 +63,13 @@ public class RoomManager {
             ((AppCompatActivity) context).startActivity(intent);
         }
     }
+    public void moveToRoomActivity2(Context context, String roomId) {
+        if (context != null && context instanceof AppCompatActivity) {
+            Intent intent = new Intent(context, Room.class);
+            intent.putExtra("roomId",roomId);
+            ((AppCompatActivity) context).startActivity(intent);
+        }
+    }
 
     public void addRoomToUser(String roomKey, String roomName) {
         Map<String, Object> updateMap = new HashMap<>();
