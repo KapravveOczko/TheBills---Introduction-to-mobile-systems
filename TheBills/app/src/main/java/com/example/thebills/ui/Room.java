@@ -32,6 +32,7 @@ public class Room extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BillsView.class);
+                intent.putExtra("roomId",roomKey);
                 startActivity(intent);
                 finish();
             }

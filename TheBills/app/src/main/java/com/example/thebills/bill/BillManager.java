@@ -5,7 +5,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.thebills.room.RoomManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -56,7 +55,7 @@ public class BillManager {
 //    ------------------------------------------------
 
     public interface GetRoomUsersCallback {
-        void onUsersReceived(Map<String, String> usersMap);
+        void onUsersReceived(Map<String, Boolean> usersMap);
         void onCancelled(String error);
     }
 
@@ -66,11 +65,11 @@ public class BillManager {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d("TheBills - room users", "query done");
 
-                GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {};
-                Map<String, String> dataMap = dataSnapshot.getValue(genericTypeIndicator);
+                GenericTypeIndicator<Map<String, Boolean>> genericTypeIndicator = new GenericTypeIndicator<Map<String, Boolean>>() {};
+                Map<String, Boolean> dataMap = dataSnapshot.getValue(genericTypeIndicator);
 
                 if (dataMap != null) {
-                    dataMap.remove(currentUser);
+                    dataMap.remove(currentUser.getUid());
                     Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
                     callback.onUsersReceived(dataMap);
                 }
@@ -83,6 +82,7 @@ public class BillManager {
             }
         });
     }
-
-
 }
+
+
+
