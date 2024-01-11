@@ -6,4 +6,56 @@
     android:layout_height="match_parent"
     tools:context=".ui.BillsView">
 
+    <TextView
+        android:id="@+id/textViewBills"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="149dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="149dp"
+        android:layout_marginBottom="696dp"
+        android:text="Bills for this room:"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/billsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBills" />
+
+    <ProgressBar
+        android:id="@+id/progressBarBillsView"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/billsRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/billsRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/billsRecyclerView"
+        app:layout_constraintTop_toTopOf="@+id/billsRecyclerView"
+        android:progressTint="@color/theBillsColor"
+        />
+
+    <Button
+        android:id="@+id/buttonAddBill"
+        android:layout_width="176dp"
+        android:layout_height="66dp"
+        android:text="add bill"
+        app:layout_constraintBottom_toTopOf="@+id/billsRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBills"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
