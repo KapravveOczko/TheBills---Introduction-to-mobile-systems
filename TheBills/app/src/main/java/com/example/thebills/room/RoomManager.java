@@ -1,4 +1,4 @@
-package com.example.thebills;
+package com.example.thebills.room;
 
 import android.content.Context;
 import android.content.Intent;

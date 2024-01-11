@@ -1,4 +1,4 @@
-package com.example.thebills;
+package com.example.thebills.bill;
 
 import java.sql.Timestamp;
 import java.util.UUID;

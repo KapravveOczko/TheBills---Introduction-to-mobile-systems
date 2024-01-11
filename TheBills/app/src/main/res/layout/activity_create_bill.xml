@@ -50,7 +50,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="cost"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -81,15 +81,51 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="304dp"
-        android:layout_height="69dp"
-        android:layout_marginTop="32dp"
-        android:text="Add Bill"
+        android:id="@+id/buttonCalculateCost"
+        android:layout_width="176dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="412dp"
+        android:text="Calculate cost"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.981"
+        app:layout_constraintStart_toEndOf="@+id/buttonAutoCalculateCost"
+        app:layout_constraintTop_toTopOf="@+id/buttonAutoCalculateCost" />
+
+    <Button
+        android:id="@+id/buttonAutoCalculateCost"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="auto calculate cost"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewDate"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.002" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/costRecyclerView"
+        android:layout_width="395dp"
+        android:layout_height="373dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAutoCalculateCost" />
+
+    <ProgressBar
+        android:id="@+id/progressBarCost"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/costRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/costRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/costRecyclerView"
+        app:layout_constraintTop_toTopOf="@+id/costRecyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

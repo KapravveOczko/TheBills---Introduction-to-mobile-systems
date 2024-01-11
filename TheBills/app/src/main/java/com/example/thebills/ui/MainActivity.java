@@ -16,11 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thebills.R;
-import com.example.thebills.RoomRecycleViewEvent;
-import com.example.thebills.RoomManager;
-import com.example.thebills.RoomManagerCreateRoom;
-import com.example.thebills.RoomManagerJoinRoom;
-import com.example.thebills.RoomManagerRecycleViewAdapter;
+import com.example.thebills.room.RoomRecycleViewEvent;
+import com.example.thebills.room.RoomManager;
+import com.example.thebills.room.RoomManagerCreateRoom;
+import com.example.thebills.room.RoomManagerJoinRoom;
+import com.example.thebills.room.RoomManagerRecycleViewAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

@@ -1,4 +1,4 @@
-package com.example.thebills;
+package com.example.thebills.room;
 
 import java.sql.Timestamp;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.example.thebills;
+package com.example.thebills.room;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -13,6 +13,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.example.thebills.R;
 
 
 public class RoomManagerCreateRoom extends AppCompatDialogFragment {
