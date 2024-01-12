@@ -69,7 +69,7 @@ public class BillManager {
                 Map<String, Boolean> dataMap = dataSnapshot.getValue(genericTypeIndicator);
 
                 if (dataMap != null) {
-                    dataMap.remove(currentUser.getUid());
+//                    dataMap.remove(currentUser.getUid());
                     Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
                     callback.onUsersReceived(dataMap);
                 }
