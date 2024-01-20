@@ -150,7 +150,7 @@ public class CreateBill extends AppCompatActivity {
 
             @Override
             public void onCancelled(String error) {
-                Log.d("MainActivity", "Błąd: " + error);
+                Log.d("MainActivity", "error: " + error);
             }
         });
     }

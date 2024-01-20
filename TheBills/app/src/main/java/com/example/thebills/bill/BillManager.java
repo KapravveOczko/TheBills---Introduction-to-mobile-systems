@@ -1,7 +1,6 @@
 package com.example.thebills.bill;
 
 import android.content.Context;
-import android.text.Editable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -94,12 +93,6 @@ public class BillManager {
         });
     }
 
-//    public void addRoomToUser(String roomKey, String roomName) {
-//        Map<String, Object> updateMap = new HashMap<>();
-//        updateMap.put(roomKey, roomName);
-//        appUsersRef.child(currentUser.getUid()).child("rooms").updateChildren(updateMap);
-//    }
-
     public void addBill(String roomKey, Map<String, Float> localCostMap, Timestamp createDate, float totalCost, String billName) {
         String billKey = billsRef.push().getKey();
 
@@ -132,6 +125,37 @@ public class BillManager {
         roomsRef.child(roomKey).child("bills").updateChildren(childUpdates);
     }
 
+//-=========================================================================================-
+
+    public interface GetRoomBillsCallback {
+        void onBillsReceived(Map<String, String> billMap);
+        void onCancelled(String error);
+    }
+
+//
+
+    public void getRoomBills(String billKey, GetRoomBillsCallback callback) {
+        roomsRef.child(billKey).child("bills").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("TheBills - billsView", "query done");
+
+                GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {};
+                Map<String, String> dataMap = dataSnapshot.getValue(genericTypeIndicator);
+
+                if (dataMap != null) {
+                    Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
+                    callback.onBillsReceived(dataMap);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("TheBills - billsView", "database error");
+                callback.onCancelled(databaseError.getMessage());
+            }
+        });
+    }
 }
 
 
