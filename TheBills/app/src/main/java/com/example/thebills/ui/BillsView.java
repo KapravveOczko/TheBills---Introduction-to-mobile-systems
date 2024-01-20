@@ -11,16 +11,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.thebills.R;
 import com.example.thebills.bill.BillManager;
 import com.example.thebills.bill.BillManagerRecycleViewAdapter;
+import com.example.thebills.bill.BillRecycleViewEvent;
 import com.example.thebills.bill.CostRecycleViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class BillsView extends AppCompatActivity {
+public class BillsView extends AppCompatActivity implements BillRecycleViewEvent {
 
     String roomKey;
     RecyclerView billsViewRecycleView;
@@ -69,7 +71,7 @@ public class BillsView extends AppCompatActivity {
             @Override
             public void onBillsReceived(Map<String, String> billsMap) {
                 billsViewProgressBar.setVisibility(View.INVISIBLE);
-                adapter = new BillManagerRecycleViewAdapter(context, billsMap);
+                adapter = new BillManagerRecycleViewAdapter(context, billsMap, BillsView.this);
 
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -80,5 +82,13 @@ public class BillsView extends AppCompatActivity {
                 Log.d("MainActivity", "error: " + error);
             }
         });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Toast.makeText(this, "entering Bill", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context, Bill.class);
+        startActivity(intent);
+        finish();
     }
 }

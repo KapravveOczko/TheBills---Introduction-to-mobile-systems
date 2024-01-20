@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewRecycleViewRooms"
+        android:id="@+id/cardViewRecycleViewBills"
         android:layout_width="0dp"
 
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                 android:id="@+id/textViewRoomName"
                 android:layout_width="343dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:text="The name of the Bill"
                 android:textColor="@color/white"

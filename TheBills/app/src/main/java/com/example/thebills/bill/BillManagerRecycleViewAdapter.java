@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.thebills.R;
+import com.example.thebills.room.RoomRecycleViewEvent;
 
 import java.util.Map;
 
@@ -18,11 +20,13 @@ public class BillManagerRecycleViewAdapter extends RecyclerView.Adapter<BillMana
     private Context context;
     private Map<String, String> billMap;
     private String[] billIds;
+    private BillRecycleViewEvent listener;
 
-    public BillManagerRecycleViewAdapter(Context context, Map<String, String> billMap) {
+    public BillManagerRecycleViewAdapter(Context context, Map<String, String> billMap, BillRecycleViewEvent listener) {
         this.context = context;
         this.billMap = billMap;
         this.billIds = billMap.keySet().toArray(new String[0]);
+        this.listener = listener;
     }
 
     @NonNull
@@ -39,6 +43,13 @@ public class BillManagerRecycleViewAdapter extends RecyclerView.Adapter<BillMana
 
         holder.textViewRoomName.setText(billName);
         holder.textViewBillID.setText(billId);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -49,11 +60,13 @@ public class BillManagerRecycleViewAdapter extends RecyclerView.Adapter<BillMana
     public static class MyBillsViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewRoomName;
         public TextView textViewBillID;
+        public CardView cardView;
 
         public MyBillsViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewRoomName = itemView.findViewById(R.id.textViewRoomName);
             textViewBillID = itemView.findViewById(R.id.textViewBillID);
+            cardView = itemView.findViewById(R.id.cardViewRecycleViewBills);
         }
     }
 }
