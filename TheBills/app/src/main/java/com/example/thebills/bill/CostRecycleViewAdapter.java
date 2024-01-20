@@ -102,6 +102,7 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
     public int getLocalCostsMapSize(){
         return localCostsMap.size();
     }
+
     public Map<String, Float> getLocalCostsMap() {
         return localCostsMap;
     }

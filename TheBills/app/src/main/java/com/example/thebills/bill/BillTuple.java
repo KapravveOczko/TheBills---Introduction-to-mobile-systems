@@ -37,7 +37,7 @@ tworząc rachunek user:
 public class BillTuple {
     private float cost;
     private UUID user;
-    private boolean paid;
+//    private boolean paid; <-- to czy user zapłacił swoją część na ten momęt do wyjebania
     private Timestamp createDate;
 
 }

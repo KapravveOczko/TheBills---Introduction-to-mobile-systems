@@ -1,6 +1,7 @@
 package com.example.thebills.bill;
 
 import android.content.Context;
+import android.text.Editable;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,17 +15,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.Map;
 
 public class BillManager {
 
     private static final String DATABASE_URL = "https://thebills-66df6-default-rtdb.europe-west1.firebasedatabase.app";
+
+
     private static final String ROOMS_REFERENCE = "rooms";
+    private static final String USERS_REFERENCE = "users";
+    private  static final String Bills_REFFERENCE = "bills";
 
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
 
     private DatabaseReference roomsRef;
+    private DatabaseReference appUsersRef;
+    private DatabaseReference billsRef;
 
     private Context context;
     private String currentRoom;
@@ -40,6 +49,8 @@ public class BillManager {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
         roomsRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(ROOMS_REFERENCE);
+        appUsersRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(USERS_REFERENCE);
+        billsRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(Bills_REFFERENCE);
     }
 
 //    ------------------------------------------------
@@ -82,6 +93,45 @@ public class BillManager {
             }
         });
     }
+
+//    public void addRoomToUser(String roomKey, String roomName) {
+//        Map<String, Object> updateMap = new HashMap<>();
+//        updateMap.put(roomKey, roomName);
+//        appUsersRef.child(currentUser.getUid()).child("rooms").updateChildren(updateMap);
+//    }
+
+    public void addBill(String roomKey, Map<String, Float> localCostMap, Timestamp createDate, float totalCost, String billName) {
+        String billKey = billsRef.push().getKey();
+
+        Map<String, Object> billData = new HashMap<>();
+        billData.put("createDate", createDate);
+        billData.put("totalCost", totalCost);
+        billData.put("costMap", localCostMap);
+        billData.put("billName", billName);
+
+        billsRef.child(billKey).setValue(billData).addOnCompleteListener(unused-> {
+            addBillToRoom(billKey, roomKey, billName);
+
+            for (String user : localCostMap.keySet()) {
+                addBillToUser(billKey, user);
+            }
+
+        });
+    }
+
+    public void addBillToUser(String bllKey, String userKey) {
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(bllKey, true);
+        appUsersRef.child(userKey).child("bills").updateChildren(childUpdates);
+    }
+
+
+    public void addBillToRoom(String bllKey, String roomKey, String billName){
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(bllKey, billName);
+        roomsRef.child(roomKey).child("bills").updateChildren(childUpdates);
+    }
+
 }
 
 

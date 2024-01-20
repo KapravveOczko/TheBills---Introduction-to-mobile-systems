@@ -114,7 +114,9 @@ public class CreateBill extends AppCompatActivity {
                             Toast.makeText(context, "total cost is not equal to given cost", Toast.LENGTH_SHORT).show();
                         }
                         else{
+                            billManager.addBill(roomKey,adapter.getLocalCostsMap(),currentTime,totalCost,billName.getText().toString());
                             Toast.makeText(context, "bill created and added", Toast.LENGTH_SHORT).show();
+                            moveToBills();
                         }
                     }
                 }
@@ -151,6 +153,12 @@ public class CreateBill extends AppCompatActivity {
                 Log.d("MainActivity", "Błąd: " + error);
             }
         });
+    }
+
+    public void moveToBills(){
+        Intent intent = new Intent(context,BillsView.class);
+        startActivity(intent);
+        finish();
     }
 
 //    private void updateCostInDatabase(String userId, String newCost) {
