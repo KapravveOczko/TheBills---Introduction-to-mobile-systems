@@ -90,7 +90,7 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
 
             @Override
             public void onCancelled(String error) {
-                Log.d("MainActivity", "error: " + error);
+                Log.d("BillView", "error: " + error);
             }
         });
     }

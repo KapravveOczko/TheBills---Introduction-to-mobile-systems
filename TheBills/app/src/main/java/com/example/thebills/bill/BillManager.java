@@ -22,10 +22,9 @@ public class BillManager {
 
     private static final String DATABASE_URL = "https://thebills-66df6-default-rtdb.europe-west1.firebasedatabase.app";
 
-
     private static final String ROOMS_REFERENCE = "rooms";
     private static final String USERS_REFERENCE = "users";
-    private  static final String Bills_REFFERENCE = "bills";
+    private static final String BILLS_REFERENCE = "bills";
 
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
@@ -37,9 +36,6 @@ public class BillManager {
     private Context context;
     private String currentRoom;
 
-
-    private Map<String, String> dataMap = null;
-
     public void setContext(Context context) {
         this.context = context;
     }
@@ -49,10 +45,8 @@ public class BillManager {
         currentUser = auth.getCurrentUser();
         roomsRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(ROOMS_REFERENCE);
         appUsersRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(USERS_REFERENCE);
-        billsRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(Bills_REFFERENCE);
+        billsRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(BILLS_REFERENCE);
     }
-
-//    ------------------------------------------------
 
     public String getCurrentRoom() {
         return currentRoom;
@@ -61,8 +55,6 @@ public class BillManager {
     public void setCurrentRoom(String currentRoom) {
         this.currentRoom = currentRoom;
     }
-
-//    ------------------------------------------------
 
     public interface GetRoomUsersCallback {
         void onUsersReceived(Map<String, Boolean> usersMap);
@@ -79,7 +71,6 @@ public class BillManager {
                 Map<String, Boolean> dataMap = dataSnapshot.getValue(genericTypeIndicator);
 
                 if (dataMap != null) {
-//                    dataMap.remove(currentUser.getUid());
                     Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
                     callback.onUsersReceived(dataMap);
                 }
@@ -102,42 +93,34 @@ public class BillManager {
         billData.put("costMap", localCostMap);
         billData.put("billName", billName);
 
-        billsRef.child(billKey).setValue(billData).addOnCompleteListener(unused-> {
+        billsRef.child(billKey).setValue(billData).addOnCompleteListener(unused -> {
             addBillToRoom(billKey, roomKey, billName);
 
             for (String user : localCostMap.keySet()) {
                 addBillToUser(billKey, user);
             }
-
         });
     }
 
-    public void addBillToUser(String bllKey, String userKey) {
+    public void addBillToUser(String billKey, String userKey) {
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(bllKey, true);
+        childUpdates.put(billKey, true);
         appUsersRef.child(userKey).child("bills").updateChildren(childUpdates);
     }
 
-
-    public void addBillToRoom(String bllKey, String roomKey, String billName){
+    public void addBillToRoom(String billKey, String roomKey, String billName) {
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(bllKey, billName);
+        childUpdates.put(billKey, billName);
         roomsRef.child(roomKey).child("bills").updateChildren(childUpdates);
     }
-
-
-
-//-=========================================================================================-
 
     public interface GetRoomBillsCallback {
         void onBillsReceived(Map<String, String> billMap);
         void onCancelled(String error);
     }
 
-//
-
-    public void getRoomBills(String billKey, GetRoomBillsCallback callback) {
-        roomsRef.child(billKey).child("bills").addListenerForSingleValueEvent(new ValueEventListener() {
+    public void getRoomBills(String roomKey, GetRoomBillsCallback callback) {
+        roomsRef.child(roomKey).child("bills").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d("TheBills - billsView", "query done");
@@ -158,7 +141,34 @@ public class BillManager {
             }
         });
     }
+
+    public interface GetBillDataCallback {
+        void onBillDataReceived(Map<String, Object> billData);
+        void onCancelled(String error);
+    }
+
+    public void getBillData(String billId, GetBillDataCallback callback) {
+        billsRef.child(billId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("TheBills - BillManager", "Query done");
+
+                GenericTypeIndicator<Map<String, Object>> genericTypeIndicator = new GenericTypeIndicator<Map<String, Object>>() {};
+                Map<String, Object> billData = dataSnapshot.getValue(genericTypeIndicator);
+
+                if (billData != null) {
+                    Log.d("Firebase", "Dane rachunku jako mapa: " + billData.toString());
+                    callback.onBillDataReceived(billData);
+                } else {
+                    Log.d("Firebase", "Brak danych dla rachunku o ID: " + billId);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("TheBills - BillManager", "Database error");
+                callback.onCancelled(databaseError.getMessage());
+            }
+        });
+    }
 }
-
-
-
