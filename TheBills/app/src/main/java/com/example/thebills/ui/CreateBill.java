@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -115,8 +116,13 @@ public class CreateBill extends AppCompatActivity {
                         }
                         else{
                             billManager.addBill(roomKey,adapter.getLocalCostsMap(),currentTime,totalCost,billName.getText().toString());
-                            Toast.makeText(context, "bill created and added", Toast.LENGTH_SHORT).show();
-                            moveToBills();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(context, "bill created and added", Toast.LENGTH_SHORT).show();
+                                    moveToRoom();
+                                }
+                            }, 500);
                         }
                     }
                 }
@@ -155,11 +161,13 @@ public class CreateBill extends AppCompatActivity {
         });
     }
 
-    public void moveToBills(){
-        Intent intent = new Intent(context,BillsView.class);
+    public void moveToRoom(){
+        Intent intent = new Intent(context, Room.class);
+        intent.putExtra("roomId", roomKey);
         startActivity(intent);
         finish();
     }
+
 
 //    private void updateCostInDatabase(String userId, String newCost) {
 //    }

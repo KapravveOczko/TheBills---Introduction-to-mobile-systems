@@ -62,7 +62,18 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshData();
+    }
 
+    private void refreshData() {
+        RecyclerView recyclerView = findViewById(R.id.billsRecyclerView);
+        if (recyclerView != null) {
+            setRecycleView();
+        }
+    }
 
     public void setRecycleView() {
         billManager.getRoomBills(roomKey, new BillManager.GetRoomBillsCallback() {
