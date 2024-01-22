@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.Map;
 
-public class Bill extends AppCompatActivity implements BillManager.GetBillDataCallback {
+public class Bill extends AppCompatActivity implements BillManager.GetBillDataCallback{
 
     TextView billName;
     TextView billOwner;
@@ -99,11 +99,10 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
     }
 
 
-
-
-
     @Override
     public void onCancelled(String error) {
         Log.d("Bill", "error: " + error);
     }
+
+
 }

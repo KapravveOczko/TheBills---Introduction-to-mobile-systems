@@ -93,10 +93,9 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
         });
     }
 
-
     @Override
     public void onItemClick(int position, String billKey) {
-        Toast.makeText(this, "entering Bill" + billKey, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "entering Bill", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, Bill.class);
         intent.putExtra("billKey", billKey);
         startActivity(intent);

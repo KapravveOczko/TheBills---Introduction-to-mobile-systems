@@ -9,12 +9,16 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.thebills.R;
+import com.example.thebills.bill.ResultsManager;
+
 
 public class Room extends AppCompatActivity {
 
     String roomKey;
     Button moveToBills;
     Button moveToUsers;
+
+    ResultsManager resultsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +29,18 @@ public class Room extends AppCompatActivity {
         roomKey = intent.getStringExtra("roomId");
         Log.d("TheBills: Room activity", "entered room: " + roomKey);
 
+        resultsManager = new ResultsManager();
+
         moveToBills = findViewById(R.id.buttonShowBills);
         moveToUsers = findViewById(R.id.buttonDeleteRoom);
+
+        resultsManager.getBillsForRoom(roomKey);
 
         moveToBills.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), BillsView.class);
-                intent.putExtra("roomId",roomKey);
+                intent.putExtra("roomId", roomKey);
                 startActivity(intent);
                 finish();
             }
