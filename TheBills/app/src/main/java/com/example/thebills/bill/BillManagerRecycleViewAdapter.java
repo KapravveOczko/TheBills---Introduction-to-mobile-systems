@@ -1,6 +1,7 @@
 package com.example.thebills.bill;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,8 @@ public class BillManagerRecycleViewAdapter extends RecyclerView.Adapter<BillMana
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onItemClick(holder.getAdapterPosition());
+                Log.d("TheBills: BillManagerRecycleViewAdapter", "entering bill: " + billId);
+                listener.onItemClick(holder.getAdapterPosition(), billId);
             }
         });
     }

@@ -17,9 +17,7 @@ import com.example.thebills.R;
 import com.example.thebills.bill.BillManager;
 import com.example.thebills.bill.BillManagerRecycleViewAdapter;
 import com.example.thebills.bill.BillRecycleViewEvent;
-import com.example.thebills.bill.CostRecycleViewAdapter;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class BillsView extends AppCompatActivity implements BillRecycleViewEvent {
@@ -95,10 +93,12 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
         });
     }
 
+
     @Override
-    public void onItemClick(int position) {
-        Toast.makeText(this, "entering Bill", Toast.LENGTH_SHORT).show();
+    public void onItemClick(int position, String billKey) {
+        Toast.makeText(this, "entering Bill" + billKey, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(context, Bill.class);
+        intent.putExtra("billKey", billKey);
         startActivity(intent);
         finish();
     }

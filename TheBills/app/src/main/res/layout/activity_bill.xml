@@ -9,32 +9,21 @@
     <TextView
         android:id="@+id/textViewBillName"
         android:layout_width="0dp"
-        android:layout_height="43dp"
+        android:layout_height="35dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="19dp"
         android:layout_marginBottom="11dp"
         android:text="name"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/theBillsColor"
         app:layout_constraintBottom_toTopOf="@+id/textViewBillOwner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textViewBillId"
-        android:layout_width="0dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="19dp"
-        android:layout_marginBottom="10dp"
-        android:text="billId"
-        app:layout_constraintBottom_toTopOf="@+id/textViewBillTotalCost"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewBillOwner"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -44,13 +33,15 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="19dp"
-        android:layout_marginBottom="29dp"
+        android:layout_marginBottom="1dp"
         android:text="totall cost"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewBill"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/buttonDeleteBill"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewBill"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBillOwner"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -59,6 +50,7 @@
         android:layout_height="49dp"
         android:layout_marginStart="19dp"
         android:text="owner"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewBillDate"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -69,9 +61,8 @@
         android:layout_marginStart="41dp"
         android:layout_marginTop="11dp"
         android:layout_marginEnd="19dp"
-        android:layout_marginBottom="11dp"
         android:text="data"
-        app:layout_constraintBottom_toTopOf="@+id/textViewBillId"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewBillOwner"
@@ -83,11 +74,12 @@
         android:layout_width="0dp"
         android:layout_height="448dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewBillTotalCost" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonDeleteBill" />
 
     <ProgressBar
         android:id="@+id/progressBarBill"
@@ -98,5 +90,19 @@
         app:layout_constraintEnd_toEndOf="@+id/recyclerViewBill"
         app:layout_constraintStart_toStartOf="@+id/recyclerViewBill"
         app:layout_constraintTop_toTopOf="@+id/recyclerViewBill" />
+
+    <Button
+        android:id="@+id/buttonDeleteBill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="161dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="14dp"
+        android:text="delete bill"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewBill"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBillTotalCost" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

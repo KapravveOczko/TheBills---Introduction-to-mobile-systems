@@ -84,7 +84,9 @@ public class BillManager {
         });
     }
 
-    public void addBill(String roomKey, Map<String, Float> localCostMap, Timestamp createDate, float totalCost, String billName) {
+    ///////////////////////////////////////////////////////////////////////////
+
+    public void addBill(String roomKey, Map<String, Float> localCostMap, Timestamp createDate, float totalCost, String billName, String billOwner) {
         String billKey = billsRef.push().getKey();
 
         Map<String, Object> billData = new HashMap<>();
@@ -92,6 +94,7 @@ public class BillManager {
         billData.put("totalCost", totalCost);
         billData.put("costMap", localCostMap);
         billData.put("billName", billName);
+        billData.put("billOwner", billOwner);
 
         billsRef.child(billKey).setValue(billData).addOnCompleteListener(unused -> {
             addBillToRoom(billKey, roomKey, billName);
@@ -113,6 +116,9 @@ public class BillManager {
         childUpdates.put(billKey, billName);
         roomsRef.child(roomKey).child("bills").updateChildren(childUpdates);
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+//    pobieranie rachunków dla pokoju
 
     public interface GetRoomBillsCallback {
         void onBillsReceived(Map<String, String> billMap);
@@ -141,6 +147,9 @@ public class BillManager {
             }
         });
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+//  pobieranie danych o rachunku
 
     public interface GetBillDataCallback {
         void onBillDataReceived(Map<String, Object> billData);
@@ -171,4 +180,9 @@ public class BillManager {
             }
         });
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+
 }
+
+

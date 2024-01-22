@@ -26,7 +26,7 @@ public class Room extends AppCompatActivity {
         Log.d("TheBills: Room activity", "entered room: " + roomKey);
 
         moveToBills = findViewById(R.id.buttonShowBills);
-        moveToUsers = findViewById(R.id.buttonShowUsers);
+        moveToUsers = findViewById(R.id.buttonDeleteRoom);
 
         moveToBills.setOnClickListener(new View.OnClickListener() {
             @Override
