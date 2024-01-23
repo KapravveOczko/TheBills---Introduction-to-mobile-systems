@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="theBillsColor">#6750A4</color>
     <color name="theBillsNoColor">#71658E</color>
+    <color name="theBillsDeleteColor">#BF2079</color>
 </resources>

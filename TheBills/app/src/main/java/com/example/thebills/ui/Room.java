@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.thebills.R;
-import com.example.thebills.bill.ResultsManager;
+import com.example.thebills.results.ResultsManager;
 
 
 public class Room extends AppCompatActivity {
@@ -17,6 +18,7 @@ public class Room extends AppCompatActivity {
     String roomKey;
     Button moveToBills;
     Button moveToUsers;
+    TextView textViewResult;
 
     ResultsManager resultsManager;
 
@@ -29,7 +31,9 @@ public class Room extends AppCompatActivity {
         roomKey = intent.getStringExtra("roomId");
         Log.d("TheBills: Room activity", "entered room: " + roomKey);
 
-        resultsManager = new ResultsManager();
+
+        textViewResult = findViewById(R.id.textViewResult);
+        resultsManager = new ResultsManager(textViewResult);
 
         moveToBills = findViewById(R.id.buttonShowBills);
         moveToUsers = findViewById(R.id.buttonDeleteRoom);

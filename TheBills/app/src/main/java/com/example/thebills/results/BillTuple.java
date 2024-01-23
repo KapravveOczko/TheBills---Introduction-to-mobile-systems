@@ -1,4 +1,4 @@
-package com.example.thebills.bill;
+package com.example.thebills.results;
 
 import java.util.Map;
 

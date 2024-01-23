@@ -1,6 +1,10 @@
-package com.example.thebills.bill;
+package com.example.thebills.results;
 
 import android.util.Log;
+import android.widget.TextView;
+
+import com.example.thebills.R;
+import com.example.thebills.bill.BillManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +20,12 @@ public class ResultsManager {
     private List<ResultTuple> resultList = new ArrayList<>();
     private Set<String> uniqueOwners = new HashSet<>();
     private int billsReceivedCount = 0; // bill counter
+
+    public ResultsManager(TextView resultsTextField) {
+        this.resultsTextField = resultsTextField;
+    }
+    TextView resultsTextField;
+
 
     public void getBillsForRoom(String roomKey) {
         billManager.getRoomBills(roomKey, new BillManager.GetRoomBillsCallback() {
@@ -66,6 +76,8 @@ public class ResultsManager {
         getOwners();
         getBills();
         logic();
+        resultsTextField.setText(getAllToString());
+
     }
 
     private void getOwners() {
@@ -105,7 +117,7 @@ public class ResultsManager {
                 }
             }
 
-            // user totall map logs
+            // user total map logs
             for (Map.Entry<String, Long> entry : userTotalmap.entrySet()) {
                 Log.d("LOGIC  DEBUG", "User: " + entry.getKey() + ", Total Cost: " + entry.getValue());
             }
@@ -114,6 +126,21 @@ public class ResultsManager {
 
         }
 
+    }
+
+    public String getAllToString(){
+
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < resultList.size(); i++) {
+            result.append(resultList.get(i).getOwner())
+                    .append("\n")
+                    .append(resultList.get(i).toString())
+                    .append("\n\n");
+
+        }
+
+        return result.toString();
     }
 
 }

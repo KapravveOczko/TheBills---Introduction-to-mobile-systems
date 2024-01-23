@@ -26,6 +26,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
         android:text="delete room"
+        android:backgroundTint="@color/theBillsDeleteColor"
         app:layout_constraintEnd_toStartOf="@+id/buttonShowBills"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RoomName" />
@@ -43,12 +44,18 @@
         app:layout_constraintTop_toBottomOf="@+id/RoomName" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="131dp"
+        android:layout_marginTop="278dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginBottom="275dp"
         android:text="there will be a summary"
-        tools:layout_editor_absoluteX="131dp"
-        tools:layout_editor_absoluteY="437dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDeleteRoom"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
