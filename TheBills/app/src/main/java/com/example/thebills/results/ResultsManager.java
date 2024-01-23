@@ -134,9 +134,9 @@ public class ResultsManager {
 
         for (int i = 0; i < resultList.size(); i++) {
             result.append(resultList.get(i).getOwner())
-                    .append("\n")
+                    .append("\n\n")
                     .append(resultList.get(i).toString())
-                    .append("\n\n");
+                    .append("\n ------------------------------ \n\n");
 
         }
 
