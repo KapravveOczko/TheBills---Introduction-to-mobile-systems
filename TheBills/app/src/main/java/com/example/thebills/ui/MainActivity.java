@@ -75,23 +75,6 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
             textViewEmail.setText(user.getEmail());
         }
 
-//        roomManager.getUserRooms(new RoomManager.GetUserRoomsCallback() {
-//            @Override
-//            public void onRoomsReceived(Map<String, String> roomMap) {
-//                progressBar.setVisibility(View.INVISIBLE);
-//                keys = new ArrayList<>(roomMap.keySet());
-//                RoomManagerRecycleViewAdapter adapter = new RoomManagerRecycleViewAdapter(context, roomMap, MainActivity.this);
-//
-//                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-//                recyclerView.setAdapter(adapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(String error) {
-//                Log.d("MainActivity", "Błąd: " + error);
-//            }
-//        });
-
         setRecycleView();
 
         buttonLogout.setOnClickListener(new View.OnClickListener() {

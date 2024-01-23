@@ -15,9 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.thebills.R;
 import com.example.thebills.bill.BillDataRecycleViewAdapter;
 import com.example.thebills.bill.BillManager;
+import com.example.thebills.remover.Remover;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -30,7 +33,11 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
     RecyclerView recyclerView;
     ProgressBar progressBar;
     String billKey;
+    String roomKey;
     Button delete;
+
+    ArrayList<String> users;
+    Remover remover;
 
     RecyclerView.Adapter adapter;
 
@@ -43,7 +50,10 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
 
         Intent intent = getIntent();
         billKey = intent.getStringExtra("billKey");
+        roomKey = intent.getStringExtra("roomKey");
         Log.d("TheBills: BillsView", "entered bill: " + billKey);
+
+        remover = new Remover(this);
 
         billName = findViewById(R.id.textViewBillName);
         billOwner = findViewById(R.id.textViewBillOwner);
@@ -57,6 +67,14 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
 
         billManager = new BillManager();
         getBillDataFromDatabase(billKey);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                remover.removeBillById(billKey,roomKey,users);
+                moveAfterDeleting();
+            }
+        });
     }
 
     private void getBillDataFromDatabase(String billId) {
@@ -79,6 +97,7 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
         billCost.setText("Total Cost: " + String.valueOf(cost));
 
         Map<String, Float> costMap = (Map<String, Float>) billData.get("costMap");
+        users = new ArrayList<>(costMap.keySet());
         adapter = new BillDataRecycleViewAdapter(costMap);
         recyclerView.setAdapter(adapter);
     }
@@ -104,5 +123,11 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
         Log.d("Bill", "error: " + error);
     }
 
+    private void moveAfterDeleting(){
+        Intent intent = new Intent(this, Room.class);
+        intent.putExtra("roomId", roomKey);
+        startActivity(intent);
+        finish();
+    }
 
 }

@@ -19,13 +19,13 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
-        android:id="@+id/buttonDeleteRoom"
+        android:id="@+id/buttonLeaveRoom"
         android:layout_width="176dp"
         android:layout_height="66dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
-        android:text="delete room"
+        android:text="leave room"
         android:backgroundTint="@color/theBillsDeleteColor"
         app:layout_constraintEnd_toStartOf="@+id/buttonShowBills"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
         android:layout_marginEnd="32dp"
         android:text="show bills"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonDeleteRoom"
+        app:layout_constraintStart_toEndOf="@+id/buttonLeaveRoom"
         app:layout_constraintTop_toBottomOf="@+id/RoomName" />
 
     <TextView
@@ -57,7 +57,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonDeleteRoom"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLeaveRoom"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

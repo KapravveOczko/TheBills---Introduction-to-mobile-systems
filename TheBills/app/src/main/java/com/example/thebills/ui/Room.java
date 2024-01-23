@@ -10,15 +10,21 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.thebills.R;
+import com.example.thebills.remover.Remover;
 import com.example.thebills.results.ResultsManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class Room extends AppCompatActivity {
 
     String roomKey;
     Button moveToBills;
-    Button moveToUsers;
+    Button delete;
     TextView textViewResult;
+    String user;
+    Remover remover;
+    private FirebaseAuth auth;
 
     ResultsManager resultsManager;
 
@@ -31,18 +37,24 @@ public class Room extends AppCompatActivity {
         roomKey = intent.getStringExtra("roomId");
         Log.d("TheBills: Room activity", "entered room: " + roomKey);
 
+        remover = new Remover(this);
 
         textViewResult = findViewById(R.id.textViewResult);
         resultsManager = new ResultsManager(textViewResult);
 
         moveToBills = findViewById(R.id.buttonShowBills);
-        moveToUsers = findViewById(R.id.buttonDeleteRoom);
+        delete = findViewById(R.id.buttonLeaveRoom);
 
         resultsManager.getBillsForRoom(roomKey);
-//        resultsManager.getBills();
-//        resultsManager.getUsers(roomKey);
+        user = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                remover.leaveRoom(roomKey, user);
+                moveAfterLeaving();
+            }
+        });
 
         moveToBills.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,4 +67,11 @@ public class Room extends AppCompatActivity {
         });
 
     }
+
+    private void moveAfterLeaving(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 }
