@@ -35,6 +35,10 @@ public class Room extends AppCompatActivity {
         moveToUsers = findViewById(R.id.buttonDeleteRoom);
 
         resultsManager.getBillsForRoom(roomKey);
+//        resultsManager.getBills();
+//        resultsManager.getUsers(roomKey);
+
+
 
         moveToBills.setOnClickListener(new View.OnClickListener() {
             @Override
