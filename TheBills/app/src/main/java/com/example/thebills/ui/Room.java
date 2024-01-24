@@ -12,19 +12,19 @@ import android.widget.TextView;
 import com.example.thebills.R;
 import com.example.thebills.remover.Remover;
 import com.example.thebills.results.ResultsManager;
+import com.example.thebills.room.RoomManager;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class Room extends AppCompatActivity {
 
+    TextView roomName;
     String roomKey;
     Button moveToBills;
     Button delete;
     TextView textViewResult;
     String user;
     Remover remover;
-    private FirebaseAuth auth;
 
     ResultsManager resultsManager;
 
@@ -54,6 +54,8 @@ public class Room extends AppCompatActivity {
         resultsManager.getBillsForRoom(roomKey);
         user = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        roomName = findViewById(R.id.RoomName);
+
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +70,21 @@ public class Room extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), BillsView.class);
                 intent.putExtra("roomId", roomKey);
                 startActivity(intent);
-//                finish();
+//                finish(); <- because we would like to return here
+            }
+        });
+
+        RoomManager roomManager = new RoomManager();
+        roomManager.getRoomsName(roomKey, new RoomManager.GetRoomsNameCallback() {
+            @Override
+            public void onRoomsNameReceived(String name) {
+                Log.d("TheBills: Room activity", "Room name received: " + name);
+                roomName.setText(name);
+            }
+
+            @Override
+            public void onCancelled(String error) {
+                Log.d("TheBills: Room activity", "Error getting room name: " + error);
             }
         });
 
@@ -80,4 +96,14 @@ public class Room extends AppCompatActivity {
         finish();
     }
 
+//    @Override
+//    public void onRoomsNameReceived(String name) {
+//        Log.d("auwhwduahwuw", "awuidhawuiwdah");
+//        roomName.setText(name);
+//    }
+//
+//    @Override
+//    public void onCancelled(String error) {
+//
+//    }
 }

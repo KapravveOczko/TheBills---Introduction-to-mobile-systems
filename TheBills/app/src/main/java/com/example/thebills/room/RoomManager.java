@@ -59,24 +59,13 @@ public class RoomManager {
         appUsersRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(USERS_REFERENCE);
     }
 
-    public void moveToRoomActivity(Context context) {
-        if (context != null && context instanceof AppCompatActivity) {
-            Intent intent = new Intent(context, Room.class);
-            ((AppCompatActivity) context).startActivity(intent);
-        }
-    }
-
-//    public void moveToRoomActivity(final Context context) {
+//    public void moveToRoomActivity(Context context) {
 //        if (context != null && context instanceof AppCompatActivity) {
-//            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Intent intent = new Intent(context, Room.class);
-//                    ((AppCompatActivity) context).startActivity(intent);
-//                }
-//            }, 500);
+//            Intent intent = new Intent(context, Room.class);
+//            ((AppCompatActivity) context).startActivity(intent);
 //        }
 //    }
+
     public void moveToRoomActivity2(Context context, String roomId) {
         if (context != null && context instanceof AppCompatActivity) {
             Intent intent = new Intent(context, Room.class);
@@ -146,7 +135,7 @@ public class RoomManager {
                 Map<String, String> dataMap = dataSnapshot.getValue(genericTypeIndicator);
 
                 if (dataMap != null) {
-                    Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
+//                    Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
                     callback.onRoomsReceived(dataMap);
                 }
             }
@@ -154,6 +143,37 @@ public class RoomManager {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("TheBills - joinRoom", "database error");
+                callback.onCancelled(databaseError.getMessage());
+            }
+        });
+    }
+
+    ///////////////////
+    // getting rooms name
+
+    public interface GetRoomsNameCallback {
+        void onRoomsNameReceived(String name);
+        void onCancelled(String error);
+    }
+
+
+    public void getRoomsName(String roomId, GetRoomsNameCallback callback) {
+        roomsRef.child(roomId).child("roomName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("TheBills - get room name", "query done");
+
+                String roomName = dataSnapshot.getValue(String.class);
+
+                if (roomName != null) {
+                    Log.d("Firebase", "Room name: " + roomName);
+                    callback.onRoomsNameReceived(roomName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("TheBills - get room name", "database error");
                 callback.onCancelled(databaseError.getMessage());
             }
         });
