@@ -7,9 +7,8 @@
         android:id="@+id/editTextRoomKey"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Klucz pokoju"
+        android:hint="room key"
         android:padding="16dp"
+        android:contentDescription="Room Key Input"/>
 
-        />
-    
 </RelativeLayout>

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,7 +18,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Title: Bills for this room"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/billsRecyclerView"
@@ -32,7 +32,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewBills" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewBills"
+        android:contentDescription="List of Bills"/>
 
     <ProgressBar
         android:id="@+id/progressBarBillsView"
@@ -44,7 +45,7 @@
         app:layout_constraintStart_toStartOf="@+id/billsRecyclerView"
         app:layout_constraintTop_toTopOf="@+id/billsRecyclerView"
         android:progressTint="@color/theBillsColor"
-        />
+        android:contentDescription="Loading Progress"/>
 
     <Button
         android:id="@+id/buttonAddBill"
@@ -56,6 +57,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintTop_toBottomOf="@+id/textViewBills"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints"
+        android:contentDescription="Add Bill Button"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

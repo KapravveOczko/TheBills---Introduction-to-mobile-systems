@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,7 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textWelcome"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:contentDescription="Email Text"/>
 
     <Button
         android:id="@+id/buttonLogout"
@@ -33,7 +33,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
         app:layout_constraintVertical_bias="0.954"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:contentDescription="Logout Button"/>
 
     <Button
         android:id="@+id/buttonCreateRoom"
@@ -45,7 +46,8 @@
         app:layout_constraintBottom_toTopOf="@+id/roomRecycleView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonJoinRoom"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:contentDescription="Create Room Button"/>
 
     <Button
         android:id="@+id/buttonJoinRoom"
@@ -56,7 +58,8 @@
         android:text="join room"
         app:layout_constraintBottom_toTopOf="@+id/roomRecycleView"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:contentDescription="Join Room Button"/>
 
     <TextView
         android:id="@+id/textWelcome"
@@ -67,12 +70,12 @@
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="Welcome Text"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roomRecycleView"
         android:layout_width="374dp"
-
         android:layout_height="362dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="128dp"
@@ -83,7 +86,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:contentDescription="Room RecyclerView"/>
 
     <ProgressBar
         android:id="@+id/progressBarRooms"
@@ -95,7 +99,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/roomRecycleView"
         android:progressTint="@color/theBillsColor"
-        />
+        android:contentDescription="Rooms Progress Bar"/>
 
     <Button
         android:id="@+id/buttonRefresh"
@@ -109,7 +113,8 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonCreateRoom"
         app:layout_constraintEnd_toStartOf="@+id/buttonCreateRoom"
         app:layout_constraintStart_toEndOf="@+id/buttonJoinRoom"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
+        android:contentDescription="Refresh Button"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

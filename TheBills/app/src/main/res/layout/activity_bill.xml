@@ -24,7 +24,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:contentDescription="Bill Name"/>
 
     <TextView
         android:id="@+id/textViewBillTotalCost"
@@ -34,7 +34,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="19dp"
         android:layout_marginBottom="1dp"
-        android:text="totall cost"
+        android:text="total cost"
         android:textSize="20dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/buttonDeleteBill"
@@ -42,7 +42,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewBillOwner"
-        tools:ignore="MissingConstraints" />
+        android:contentDescription="Total Cost"/>
 
     <TextView
         android:id="@+id/textViewBillOwner"
@@ -52,7 +52,8 @@
         android:text="owner"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/textViewBillDate"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="Bill Owner"/>
 
     <TextView
         android:id="@+id/textViewBillDate"
@@ -61,13 +62,13 @@
         android:layout_marginStart="41dp"
         android:layout_marginTop="11dp"
         android:layout_marginEnd="19dp"
-        android:text="data"
+        android:text="date"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewBillOwner"
         app:layout_constraintTop_toBottomOf="@+id/textViewBillName"
-        tools:ignore="MissingConstraints" />
+        android:contentDescription="Bill Date"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewBill"
@@ -79,7 +80,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonDeleteBill" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonDeleteBill"
+        android:contentDescription="Bill Items"/>
 
     <ProgressBar
         android:id="@+id/progressBarBill"
@@ -89,7 +91,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewBill"
         app:layout_constraintEnd_toEndOf="@+id/recyclerViewBill"
         app:layout_constraintStart_toStartOf="@+id/recyclerViewBill"
-        app:layout_constraintTop_toTopOf="@+id/recyclerViewBill" />
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewBill"
+        android:contentDescription="Loading Progress"/>
 
     <Button
         android:id="@+id/buttonDeleteBill"
@@ -104,6 +107,8 @@
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewBill"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewBillTotalCost" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewBillTotalCost"
+        android:contentDescription="Delete Bill Button"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
