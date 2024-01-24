@@ -68,7 +68,7 @@ public class Room extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), BillsView.class);
                 intent.putExtra("roomId", roomKey);
                 startActivity(intent);
-                finish();
+//                finish();
             }
         });
 

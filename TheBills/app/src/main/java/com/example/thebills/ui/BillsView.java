@@ -43,7 +43,7 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
         billManager = new BillManager();
         billManager.setCurrentRoom(roomKey);
         billsViewProgressBar = findViewById(R.id.progressBarBillsView);
-        billsViewProgressBar.setVisibility(View.VISIBLE);
+//        billsViewProgressBar.setVisibility(View.VISIBLE);
         addBillButton = findViewById(R.id.buttonAddBill);
 
         addBillButton.setOnClickListener(new View.OnClickListener() {
@@ -74,21 +74,25 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
     }
 
     public void setRecycleView() {
+//        billsViewProgressBar.setVisibility(View.VISIBLE);
+        billsViewProgressBar.setVisibility(View.INVISIBLE);
         billManager.getRoomBills(roomKey, new BillManager.GetRoomBillsCallback() {
             RecyclerView recyclerView = findViewById(R.id.billsRecyclerView);
 
             @Override
             public void onBillsReceived(Map<String, String> billsMap) {
-                billsViewProgressBar.setVisibility(View.INVISIBLE);
-                adapter = new BillManagerRecycleViewAdapter(context, billsMap, BillsView.this);
 
+                adapter = new BillManagerRecycleViewAdapter(context, billsMap, BillsView.this);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                billsViewProgressBar.setVisibility(View.INVISIBLE);
+
             }
 
             @Override
             public void onCancelled(String error) {
                 Log.d("BillView", "error: " + error);
+                billsViewProgressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
