@@ -33,9 +33,15 @@ public class Room extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
 
-        Intent intent = getIntent();
-        roomKey = intent.getStringExtra("roomId");
-        Log.d("TheBills: Room activity", "entered room: " + roomKey);
+        try {
+            Intent intent = getIntent();
+            roomKey = intent.getStringExtra("roomId");
+            Log.d("TheBills: Room activity", "entered room: " + roomKey);
+        } catch (NullPointerException e){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         remover = new Remover(this);
 

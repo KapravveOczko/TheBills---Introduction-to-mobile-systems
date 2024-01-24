@@ -59,24 +59,24 @@ public class RoomManager {
         appUsersRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(USERS_REFERENCE);
     }
 
-//    public void moveToRoomActivity(Context context) {
-//        if (context != null && context instanceof AppCompatActivity) {
-//            Intent intent = new Intent(context, Room.class);
-//            ((AppCompatActivity) context).startActivity(intent);
-//        }
-//    }
-
-    public void moveToRoomActivity(final Context context) {
+    public void moveToRoomActivity(Context context) {
         if (context != null && context instanceof AppCompatActivity) {
-            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(context, Room.class);
-                    ((AppCompatActivity) context).startActivity(intent);
-                }
-            }, 500);
+            Intent intent = new Intent(context, Room.class);
+            ((AppCompatActivity) context).startActivity(intent);
         }
     }
+
+//    public void moveToRoomActivity(final Context context) {
+//        if (context != null && context instanceof AppCompatActivity) {
+//            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Intent intent = new Intent(context, Room.class);
+//                    ((AppCompatActivity) context).startActivity(intent);
+//                }
+//            }, 500);
+//        }
+//    }
     public void moveToRoomActivity2(Context context, String roomId) {
         if (context != null && context instanceof AppCompatActivity) {
             Intent intent = new Intent(context, Room.class);
@@ -84,7 +84,6 @@ public class RoomManager {
             ((AppCompatActivity) context).startActivity(intent);
         }
     }
-
     public void addRoomToUser(String roomKey, String roomName) {
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put(roomKey, roomName);
@@ -100,7 +99,7 @@ public class RoomManager {
         String roomKey = roomsRef.push().getKey();
         RoomTuple newRoom = new RoomTuple(roomKey, roomName, currentUser.getUid());
 
-        roomsRef.child(roomKey).setValue(newRoom).addOnSuccessListener(unused -> {
+        roomsRef.child(roomKey).setValue(newRoom).addOnCompleteListener(unused -> {
             addUserToRoom(roomKey);
             addRoomToUser(roomKey, roomName);
         });

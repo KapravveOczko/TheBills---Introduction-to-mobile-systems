@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
     FirebaseUser user;
     RoomManager roomManager;
     Context context;
-
+    Button refresh;
     List<String> keys;
 
 
@@ -87,6 +87,13 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
             }
         });
 
+        refresh = findViewById(R.id.buttonRefresh);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recreate();
+            }
+        });
 
         buttonCreateRoom.setOnClickListener(new View.OnClickListener() {
             @Override
