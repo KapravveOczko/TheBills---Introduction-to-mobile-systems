@@ -89,14 +89,14 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
         String owner = (String) billData.get("billOwner");
         Map<String, Object> createDateMap = (Map<String, Object>) billData.get("createDate");
         Timestamp timestamp = Timestamp.valueOf(convertMapToTimestamp(createDateMap));
-        float cost = Float.parseFloat(billData.get("totalCost").toString());
+        Double cost = Double.parseDouble(billData.get("totalCost").toString());
 
         billName.setText(name);
         billOwner.setText("Bill Owner: " + owner);
         billDate.setText("Create Date: " + timestamp.toString());
         billCost.setText("Total Cost: " + String.valueOf(cost));
 
-        Map<String, Float> costMap = (Map<String, Float>) billData.get("costMap");
+        Map<String, Double> costMap = (Map<String, Double>) billData.get("costMap");
         users = new ArrayList<>(costMap.keySet());
         adapter = new BillDataRecycleViewAdapter(costMap);
         recyclerView.setAdapter(adapter);

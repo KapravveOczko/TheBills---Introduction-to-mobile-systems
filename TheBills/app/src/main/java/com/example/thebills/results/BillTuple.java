@@ -4,9 +4,9 @@ import java.util.Map;
 
 public class BillTuple {
     private String owner;
-    private Map<String, Long> costmap;
+    private Map<String, Double> costmap;
 
-    public BillTuple(String owner, Map<String, Long> costmap) {
+    public BillTuple(String owner, Map<String, Double> costmap) {
         this.owner = owner;
         this.costmap = costmap;
     }
@@ -23,7 +23,7 @@ public class BillTuple {
         return owner;
     }
 
-    public Map<String, Long> getCostmap() {
+    public Map<String, Double> getCostmap() {
         return costmap;
     }
 }

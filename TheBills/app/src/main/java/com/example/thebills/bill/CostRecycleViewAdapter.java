@@ -23,7 +23,7 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
 
     private Context context;
     private Map<String, Boolean> usersMap;
-    private Map<String, Float> localCostsMap;
+    private Map<String, Double> localCostsMap;
 
     public CostRecycleViewAdapter(Context context, Map<String, Boolean> usersMap) {
         this.context = context;
@@ -32,7 +32,7 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
     }
 
     public interface CostChangeListener {
-        void onCostChanged(String userId, Float newCost);
+        void onCostChanged(String userId, Double newCost);
     }
 
     private CostChangeListener costChangeListener;
@@ -64,7 +64,7 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
                     newCostString = "0";
                 }
 
-                Float newCost = Float.valueOf(newCostString);
+                Double newCost = Double.valueOf(newCostString);
 
                 localCostsMap.put(key, newCost);
 
@@ -74,7 +74,7 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
             }
         });
 
-        Float localCost = localCostsMap.get(key);
+        Double localCost = localCostsMap.get(key);
         if (localCost != null) {
             holder.cost.setText(String.valueOf(localCost));
         }
@@ -103,30 +103,30 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
         return localCostsMap.size();
     }
 
-    public Map<String, Float> getLocalCostsMap() {
+    public Map<String, Double> getLocalCostsMap() {
         return localCostsMap;
     }
 
-    public Float getLocalCostMapSum() {
-        Float sum = 0.0F;
-        for (Map.Entry<String, Float> entry : localCostsMap.entrySet()) {
+    public Double getLocalCostMapSum() {
+        Double sum = 0.0D;
+        for (Map.Entry<String, Double> entry : localCostsMap.entrySet()) {
             sum += entry.getValue();
         }
         return sum;
     }
 
-    public void setLocalCostsMapAutoCalc(Float totalCost) {
+    public void setLocalCostsMapAutoCalc(Double totalCost) {
         Log.d("LocalCostsMapBefore", "Before setting: " + localCostsMap.toString());
 
         int localCostsMapSize = getLocalCostsMapSize();
         Log.d("LocalCostsMapSize", "Size: " + localCostsMapSize);
 
         if (localCostsMapSize > 0) {
-            Float costPerUser = totalCost / localCostsMapSize;
+            Double costPerUser = totalCost / localCostsMapSize;
             Log.d("TotalCost", "Before division: " + totalCost);
             Log.d("CostPerUser", "After division: " + costPerUser);
 
-            for (Map.Entry<String, Float> entry : localCostsMap.entrySet()) {
+            for (Map.Entry<String, Double> entry : localCostsMap.entrySet()) {
                 entry.setValue(costPerUser);
             }
         }

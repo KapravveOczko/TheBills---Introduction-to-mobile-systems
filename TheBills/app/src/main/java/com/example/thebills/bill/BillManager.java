@@ -86,8 +86,14 @@ public class BillManager {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    public void addBill(String roomKey, Map<String, Float> localCostMap, Timestamp createDate, float totalCost, String billName, String billOwner) {
+    public void addBill(String roomKey, Map<String, Double> localCostMap, Timestamp createDate, Double totalCost, String billName, String billOwner) {
         String billKey = billsRef.push().getKey();
+
+//        for (Map.Entry<String, Double> entry : localCostMap.entrySet()) {
+//            String userId = entry.getKey();
+//            Double cost = entry.getValue();
+//            localCostMap.put(userId, cost + 0.0001f);
+//        }
 
         Map<String, Object> billData = new HashMap<>();
         billData.put("createDate", createDate);

@@ -16,9 +16,9 @@ import java.util.Map;
 
 public class BillDataRecycleViewAdapter extends RecyclerView.Adapter<BillDataRecycleViewAdapter.MyBillDataViewHolder> {
 
-    private List<Map.Entry<String, Float>> costMapEntries;
+    private List<Map.Entry<String, Double>> costMapEntries;
 
-    public BillDataRecycleViewAdapter(Map<String, Float> costMap) {
+    public BillDataRecycleViewAdapter(Map<String, Double> costMap) {
         this.costMapEntries = new ArrayList<>(costMap.entrySet());
     }
 
@@ -31,7 +31,7 @@ public class BillDataRecycleViewAdapter extends RecyclerView.Adapter<BillDataRec
 
     @Override
     public void onBindViewHolder(@NonNull MyBillDataViewHolder holder, int position) {
-        Map.Entry<String, Float> entry = costMapEntries.get(position);
+        Map.Entry<String, Double> entry = costMapEntries.get(position);
 
         holder.name.setText(entry.getKey());
         holder.cost.setText(String.valueOf(entry.getValue()));

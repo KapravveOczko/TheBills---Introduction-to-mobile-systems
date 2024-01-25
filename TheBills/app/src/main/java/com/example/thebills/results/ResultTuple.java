@@ -5,9 +5,9 @@ import java.util.Map;
 public class ResultTuple {
 
     private String owner;
-    private Map<String, Long> ownerCostMap;
+    private Map<String, Double> ownerCostMap;
 
-    public ResultTuple(String owner, Map<String, Long> ownerCostMap) {
+    public ResultTuple(String owner, Map<String, Double> ownerCostMap) {
         this.owner = owner;
         this.ownerCostMap = ownerCostMap;
     }
@@ -16,7 +16,7 @@ public class ResultTuple {
         return owner;
     }
 
-    public Map<String, Long> getOwnerCostMap() {
+    public Map<String, Double> getOwnerCostMap() {
         return ownerCostMap;
     }
 
@@ -24,9 +24,9 @@ public class ResultTuple {
     public String toString() {
         StringBuilder resultString = new StringBuilder();
 
-        for (Map.Entry<String, Long> entry : ownerCostMap.entrySet()) {
+        for (Map.Entry<String, Double> entry : ownerCostMap.entrySet()) {
             String userId = entry.getKey();
-            Long value = entry.getValue();
+            Double value = entry.getValue();
 
             if (!userId.equals(owner)) {
                 resultString.append(userId)

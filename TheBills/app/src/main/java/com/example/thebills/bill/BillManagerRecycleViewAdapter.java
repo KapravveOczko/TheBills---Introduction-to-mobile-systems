@@ -22,7 +22,6 @@ public class BillManagerRecycleViewAdapter extends RecyclerView.Adapter<BillMana
     private Map<String, String> billMap;
     private String[] billIds;
     private BillRecycleViewEvent listener;
-
     public BillManagerRecycleViewAdapter(Context context, Map<String, String> billMap, BillRecycleViewEvent listener) {
         this.context = context;
         this.billMap = billMap;

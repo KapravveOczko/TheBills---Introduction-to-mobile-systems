@@ -41,7 +41,7 @@ public class ResultsManager {
                     billManager.getBillData(billKey, new BillManager.GetBillDataCallback() {
                         @Override
                         public void onBillDataReceived(Map<String, Object> billData) {
-                            Map<String, Long> costMap = (Map<String, Long>) billData.get("costMap");
+                            Map<String, Double> costMap = (Map<String, Double>) billData.get("costMap");
                             String billOwner = (String) billData.get("billOwner");
 
                             Log.d("ResultsManager - costMap", costMap.toString());
@@ -96,19 +96,19 @@ public class ResultsManager {
     public void logic(){
 
         for (String owner : uniqueOwners) {
-            Map<String, Long> userTotalmap = new HashMap<>();
+            Map<String, Double> userTotalmap = new HashMap<>();
 
             for (int i = 0; i < billList.size(); i++) {
                 if(billList.get(i).getOwner().equals(owner)){
                     Log.d("LOGIC  DEBUG", "owner of the bill: " + owner);
 
-                    Map<String, Long> singleBillMap = billList.get(i).getCostmap();
+                    Map<String, Double> singleBillMap = billList.get(i).getCostmap();
 
                     for (String key :  singleBillMap.keySet()) {
                         // checking if key exists
                         if (userTotalmap.containsKey(key)) {
-                            Long existingValue = userTotalmap.get(key);
-                            Long billValue = singleBillMap.get(key);
+                            Double existingValue = userTotalmap.get(key);
+                            Double billValue = singleBillMap.get(key);
                             userTotalmap.put(key, existingValue + billValue);
                         } else {
                             userTotalmap.put(key, singleBillMap.get(key));
@@ -118,7 +118,7 @@ public class ResultsManager {
             }
 
             // user total map logs
-            for (Map.Entry<String, Long> entry : userTotalmap.entrySet()) {
+            for (Map.Entry<String, Double> entry : userTotalmap.entrySet()) {
                 Log.d("LOGIC  DEBUG", "User: " + entry.getKey() + ", Total Cost: " + entry.getValue());
             }
 

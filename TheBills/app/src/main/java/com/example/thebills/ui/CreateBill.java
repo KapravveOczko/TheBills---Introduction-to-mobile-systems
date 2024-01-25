@@ -87,7 +87,7 @@ public class CreateBill extends AppCompatActivity {
                 if (TextUtils.isEmpty(billTotalCost.getText())) {
                     Toast.makeText(context, "total cost is null", Toast.LENGTH_SHORT).show();
                 } else {
-                    float totalCost = Float.parseFloat(billTotalCost.getText().toString());
+                    Double totalCost = Double.parseDouble(billTotalCost.getText().toString());
                     adapter.setLocalCostsMapAutoCalc(totalCost);
                     adapter.setLocalCostsMapAutoCalc(totalCost);
                 }
@@ -97,9 +97,9 @@ public class CreateBill extends AppCompatActivity {
         acceptCost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, Float> localCostsMap = adapter.getLocalCostsMap();
+                Map<String, Double> localCostsMap = adapter.getLocalCostsMap();
 
-                for (Map.Entry<String, Float> entry : localCostsMap.entrySet()) {
+                for (Map.Entry<String, Double> entry : localCostsMap.entrySet()) {
                     Log.d("LocalCostsMap", "User: " + entry.getKey() + ", Cost: " + entry.getValue());
                 }
 
@@ -110,8 +110,9 @@ public class CreateBill extends AppCompatActivity {
                     if (TextUtils.isEmpty(billTotalCost.getText())) {
                         Toast.makeText(context, "total cost is null", Toast.LENGTH_SHORT).show();
                     } else {
-                        float totalCost = Float.parseFloat(billTotalCost.getText().toString());
-                        if (totalCost != adapter.getLocalCostMapSum()) {
+                        Double totalCost = Double.parseDouble(billTotalCost.getText().toString());
+//                        if (totalCost != adapter.getLocalCostMapSum()) {
+                        if (Math.abs(totalCost - adapter.getLocalCostMapSum()) > 0.01){
                             Toast.makeText(context, "total cost is not equal to given cost", Toast.LENGTH_SHORT).show();
                         }
                         else{
