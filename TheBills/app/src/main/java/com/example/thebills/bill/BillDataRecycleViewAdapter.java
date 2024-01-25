@@ -34,7 +34,8 @@ public class BillDataRecycleViewAdapter extends RecyclerView.Adapter<BillDataRec
         Map.Entry<String, Double> entry = costMapEntries.get(position);
 
         holder.name.setText(entry.getKey());
-        holder.cost.setText(String.valueOf(entry.getValue()));
+        String formattedValue = String.format("%.2f", entry.getValue());
+        holder.cost.setText(formattedValue);
     }
 
     @Override

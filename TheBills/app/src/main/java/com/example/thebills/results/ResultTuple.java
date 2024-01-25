@@ -29,9 +29,10 @@ public class ResultTuple {
             Double value = entry.getValue();
 
             if (!userId.equals(owner)) {
+                String formattedValue = String.format("%.2f", value);
                 resultString.append(userId)
                         .append(" owns value ")
-                        .append(value)
+                        .append(formattedValue)
                         .append("\n");
             }
         }
