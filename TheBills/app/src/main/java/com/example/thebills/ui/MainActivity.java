@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
             startActivity(intent);
             finish();
         } else {
-            textViewEmail.setText(user.getEmail());
+            textViewEmail.setText(user.getUid());
         }
 
         setRecycleView();

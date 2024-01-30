@@ -7,12 +7,12 @@
 
     <TextView
         android:id="@+id/textHeader"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="80dp"
         android:layout_marginStart="80dp"
         android:layout_marginTop="91dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="208dp"
         android:contentDescription="Register Header"
         android:text="Register:"
         android:textAlignment="center"
@@ -24,20 +24,37 @@
         tools:ignore="HardcodedText,MissingConstraints" />
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textFieldEmail"
+        android:id="@+id/textFieldUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="30dp"
-        android:contentDescription="Email Input"
-        android:hint="email"
+        android:contentDescription="Username Input"
+        android:hint="username"
         android:textSize="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/textFieldEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textHeader"
         tools:ignore="MissingConstraints" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textFieldEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:contentDescription="Email Input"
+        android:hint="email"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="232dp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textFieldPassword"

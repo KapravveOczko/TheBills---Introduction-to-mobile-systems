@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.thebills.MainActivity;
 import com.example.thebills.R;
+import com.example.thebills.UserManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -27,6 +28,9 @@ public class Register extends AppCompatActivity {
     Button buttonReg;
     FirebaseAuth mAuth;
     TextView textView;
+    TextInputEditText usernameInput;
+
+    UserManager userManager;
 
 
     @Override
@@ -34,11 +38,14 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        userManager = new UserManager();
+
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.textFieldEmail);
         editTextPassword = findViewById(R.id.textFieldPassword);
         buttonReg = findViewById(R.id.buttonRegister);
         textView = findViewById(R.id.textRegister);
+        usernameInput = findViewById(R.id.textFieldUsername);
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,9 +59,10 @@ public class Register extends AppCompatActivity {
         buttonReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email, password;
+                String email, password, username;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
+                username = String.valueOf(usernameInput.getText());
 
                 if (TextUtils.isEmpty(email)){
                     Toast.makeText(Register.this, "Enter email", Toast.LENGTH_SHORT).show();
@@ -62,6 +70,10 @@ public class Register extends AppCompatActivity {
                 }
                 if (TextUtils.isEmpty(password)){
                     Toast.makeText(Register.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(username)){
+                    Toast.makeText(Register.this, "Enter username", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -72,6 +84,7 @@ public class Register extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
 //                                    Log.d(TAG, "createUserWithEmail:success");
+                                    userManager.addUsername(mAuth.getCurrentUser().getUid(), username);
                                     Toast.makeText(Register.this, "Account created!",
                                             Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), com.example.thebills.ui.MainActivity.class);
