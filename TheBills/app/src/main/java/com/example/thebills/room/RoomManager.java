@@ -2,8 +2,6 @@ package com.example.thebills.room;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -59,14 +57,7 @@ public class RoomManager {
         appUsersRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(USERS_REFERENCE);
     }
 
-//    public void moveToRoomActivity(Context context) {
-//        if (context != null && context instanceof AppCompatActivity) {
-//            Intent intent = new Intent(context, Room.class);
-//            ((AppCompatActivity) context).startActivity(intent);
-//        }
-//    }
-
-    public void moveToRoomActivity2(Context context, String roomId) {
+    public void moveToRoomActivity(Context context, String roomId) {
         if (context != null && context instanceof AppCompatActivity) {
             Intent intent = new Intent(context, Room.class);
             intent.putExtra("roomId",roomId);

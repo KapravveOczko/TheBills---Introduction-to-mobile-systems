@@ -1,0 +1,111 @@
+{
+  "bills": {
+    "-Np-riTNtMEUi8ry8DWt": {
+      "billName": "bill3",
+      "billOwner": "kLdvBu0ZWoeM3BKHNpIDRcH3d3l1",
+      "costMap": {
+        "I4hSBu210Pel8KKXeGCIlM2wzBC3": 20.0001,
+        "XWMooxWgXhfvl2BrEbh84m8VQbH3": 20.0001,
+        "kLdvBu0ZWoeM3BKHNpIDRcH3d3l1": 20.0001
+      },
+      "createDate": {
+        "date": 25,
+        "day": 4,
+        "hours": 13,
+        "minutes": 42,
+        "month": 0,
+        "nanos": 515000000,
+        "seconds": 47,
+        "time": 1706190167515,
+        "timezoneOffset": 0,
+        "year": 124
+      },
+      "totalCost": 60
+    },
+    "-Np-t9nITbfPnisgUNgQ": {
+      "billName": "billuser8",
+      "billOwner": "N9SpUNaOzBYNNVH46X8EkoLpDq42",
+      "costMap": {
+        "I4hSBu210Pel8KKXeGCIlM2wzBC3": 7.5001,
+        "N9SpUNaOzBYNNVH46X8EkoLpDq42": 7.5001,
+        "XWMooxWgXhfvl2BrEbh84m8VQbH3": 7.5001,
+        "kLdvBu0ZWoeM3BKHNpIDRcH3d3l1": 7.5001
+      },
+      "createDate": {
+        "date": 25,
+        "day": 4,
+        "hours": 13,
+        "minutes": 51,
+        "month": 0,
+        "nanos": 515000000,
+        "seconds": 29,
+        "time": 1706190689515,
+        "timezoneOffset": 0,
+        "year": 124
+      },
+      "totalCost": 30
+    }
+  },
+  "rooms": {
+    "-Np-hYYQEgw88o6BCUgK": {
+      "bills": {
+        "-Np-riTNtMEUi8ry8DWt": "bill3",
+        "-Np-t9nITbfPnisgUNgQ": "billuser8"
+      },
+      "createDate": {
+        "date": 25,
+        "day": 4,
+        "hours": 13,
+        "minutes": 1,
+        "month": 0,
+        "nanos": 618000000,
+        "seconds": 40,
+        "time": 1706187700618,
+        "timezoneOffset": 0,
+        "year": 124
+      },
+      "ownerId": "I4hSBu210Pel8KKXeGCIlM2wzBC3",
+      "roomId": "-Np-hYYQEgw88o6BCUgK",
+      "roomName": "room1",
+      "users": {
+        "I4hSBu210Pel8KKXeGCIlM2wzBC3": true,
+        "XWMooxWgXhfvl2BrEbh84m8VQbH3": true,
+        "kLdvBu0ZWoeM3BKHNpIDRcH3d3l1": true
+      }
+    }
+  },
+  "users": {
+    "I4hSBu210Pel8KKXeGCIlM2wzBC3": {
+      "bills": {
+        "-Np-riTNtMEUi8ry8DWt": true,
+        "-Np-t9nITbfPnisgUNgQ": true
+      },
+      "rooms": {
+        "-Np-hYYQEgw88o6BCUgK": "room1"
+      }
+    },
+    "N9SpUNaOzBYNNVH46X8EkoLpDq42": {
+      "bills": {
+        "-Np-t9nITbfPnisgUNgQ": true
+      }
+    },
+    "XWMooxWgXhfvl2BrEbh84m8VQbH3": {
+      "bills": {
+        "-Np-riTNtMEUi8ry8DWt": true,
+        "-Np-t9nITbfPnisgUNgQ": true
+      },
+      "rooms": {
+        "-Np-hYYQEgw88o6BCUgK": "room1"
+      }
+    },
+    "kLdvBu0ZWoeM3BKHNpIDRcH3d3l1": {
+      "bills": {
+        "-Np-riTNtMEUi8ry8DWt": true,
+        "-Np-t9nITbfPnisgUNgQ": true
+      },
+      "rooms": {
+        "-Np-hYYQEgw88o6BCUgK": "room1"
+      }
+    }
+  }
+}

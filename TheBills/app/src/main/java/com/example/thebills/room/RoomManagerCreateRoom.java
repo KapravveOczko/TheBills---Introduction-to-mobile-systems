@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.thebills.R;
 import com.example.thebills.ui.MainActivity;
+import com.google.firebase.database.DatabaseReference;
 
 
 public class RoomManagerCreateRoom extends AppCompatDialogFragment {
@@ -54,7 +55,6 @@ public class RoomManagerCreateRoom extends AppCompatDialogFragment {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing on cancel
                     }
                 })
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
@@ -78,4 +78,6 @@ public class RoomManagerCreateRoom extends AppCompatDialogFragment {
 //            roomManager.moveToRoomActivity(this.context);
         }
     }
+
+
 }

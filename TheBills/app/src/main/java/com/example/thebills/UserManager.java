@@ -18,19 +18,16 @@ public class UserManager {
     private static final String DATABASE_URL = "https://thebills-66df6-default-rtdb.europe-west1.firebasedatabase.app";
     private static final String USERS_REFERENCE = "users";
     private FirebaseAuth auth;
-    private FirebaseUser currentUser;
     private DatabaseReference appUsersRef;
 
     public UserManager() {
         auth = FirebaseAuth.getInstance();
-        currentUser = auth.getCurrentUser();
         appUsersRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(USERS_REFERENCE);
     }
 
-//do sprawdzenia czy zadziała
     public void addUsername(String userId, String username) {
-        DatabaseReference usersRef = appUsersRef.child(userId);
-        usersRef.setValue("username", username);
+        DatabaseReference usersRef = appUsersRef.child(userId).child("username");
+        usersRef.setValue(username);
     }
 
 

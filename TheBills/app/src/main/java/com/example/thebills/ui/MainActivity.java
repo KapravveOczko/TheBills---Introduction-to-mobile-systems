@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
     public void onItemClick(int position) {
         String roomKey = keys.get(position);
         Toast.makeText(this, "entering room: " + roomKey, Toast.LENGTH_SHORT).show();
-        roomManager.moveToRoomActivity2(context, roomKey);
+        roomManager.moveToRoomActivity(context, roomKey);
     }
 
     public void setRecycleView() {
