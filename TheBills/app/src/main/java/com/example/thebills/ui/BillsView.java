@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.thebills.R;
+import com.example.thebills.UserManager;
 import com.example.thebills.bill.BillManager;
 import com.example.thebills.bill.BillManagerRecycleViewAdapter;
 import com.example.thebills.bill.BillRecycleViewEvent;
@@ -30,6 +31,7 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
     BillManagerRecycleViewAdapter adapter;
     BillManager billManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +45,7 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
         billManager = new BillManager();
         billManager.setCurrentRoom(roomKey);
         billsViewProgressBar = findViewById(R.id.progressBarBillsView);
-//        billsViewProgressBar.setVisibility(View.VISIBLE);
         addBillButton = findViewById(R.id.buttonAddBill);
-
         addBillButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +74,6 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
     }
 
     public void setRecycleView() {
-//        billsViewProgressBar.setVisibility(View.VISIBLE);
         billsViewProgressBar.setVisibility(View.INVISIBLE);
         billManager.getRoomBills(roomKey, new BillManager.GetRoomBillsCallback() {
             RecyclerView recyclerView = findViewById(R.id.billsRecyclerView);
@@ -106,4 +105,5 @@ public class BillsView extends AppCompatActivity implements BillRecycleViewEvent
         startActivity(intent);
         finish();
     }
+
 }

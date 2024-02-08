@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thebills.R;
+import com.example.thebills.UserManager;
 import com.example.thebills.bill.BillManager;
 import com.example.thebills.bill.CostRecycleViewAdapter;
 import com.google.android.material.textfield.TextInputEditText;
@@ -46,6 +47,8 @@ public class CreateBill extends AppCompatActivity {
     FirebaseUser user;
     Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 
+    UserManager userManager;
+
     List<String> users;
     CostRecycleViewAdapter adapter;
 
@@ -62,9 +65,12 @@ public class CreateBill extends AppCompatActivity {
         context = this;
         billManager = new BillManager();
         billManager.setCurrentRoom(roomKey);
+        userManager = new UserManager();
 
         owner = findViewById(R.id.textViewOwner);
         user = auth.getCurrentUser();
+
+        // to do wyjebania
         owner.setText(user.getUid());
 
         date = findViewById(R.id.textViewDate);
@@ -131,6 +137,18 @@ public class CreateBill extends AppCompatActivity {
             }
         });
 
+        setUsername(new UserManager.GetUsernameCallback() {
+            @Override
+            public void onUsernameReceived(String name) {
+                owner.setText(name);
+            }
+
+            @Override
+            public void onCancelled(String error) {
+                Toast.makeText(CreateBill.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         setRecycleView();
     }
 
@@ -169,7 +187,19 @@ public class CreateBill extends AppCompatActivity {
         finish();
     }
 
+    public void setUsername(UserManager.GetUsernameCallback callback) {
+        userManager.getUsername(user.getUid(), new UserManager.GetUsernameCallback() {
+            @Override
+            public void onUsernameReceived(String name) {
+                callback.onUsernameReceived(name);
+            }
 
-//    private void updateCostInDatabase(String userId, String newCost) {
-//    }
+            @Override
+            public void onCancelled(String error) {
+                callback.onCancelled(error);
+            }
+        });
+    }
+
+
 }

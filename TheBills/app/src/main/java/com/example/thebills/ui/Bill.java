@@ -7,12 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.thebills.R;
+import com.example.thebills.UserManager;
 import com.example.thebills.bill.BillDataRecycleViewAdapter;
 import com.example.thebills.bill.BillManager;
 import com.example.thebills.remover.Remover;
@@ -40,6 +42,7 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
     Remover remover;
 
     RecyclerView.Adapter adapter;
+    UserManager userManager;
 
     private BillManager billManager;
 
@@ -54,6 +57,7 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
         Log.d("TheBills: BillsView", "entered bill: " + billKey);
 
         remover = new Remover(this);
+        userManager =new UserManager();
 
         billName = findViewById(R.id.textViewBillName);
         billOwner = findViewById(R.id.textViewBillOwner);
@@ -92,7 +96,6 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
         Double cost = Double.parseDouble(billData.get("totalCost").toString());
 
         billName.setText(name);
-        billOwner.setText("Bill Owner: " + owner);
         billDate.setText("Create Date: " + timestamp.toString());
         billCost.setText("Total Cost: " + String.valueOf(cost));
 
@@ -100,6 +103,18 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
         users = new ArrayList<>(costMap.keySet());
         adapter = new BillDataRecycleViewAdapter(costMap);
         recyclerView.setAdapter(adapter);
+
+        setUsername(owner, new UserManager.GetUsernameCallback() {
+            @Override
+            public void onUsernameReceived(String name) {
+                billOwner.setText("Bill Owner: " + name);
+            }
+
+            @Override
+            public void onCancelled(String error) {
+                Toast.makeText(Bill.this, "Error: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private String convertMapToTimestamp(Map<String, Object> createDateMap) {
@@ -130,4 +145,18 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
         finish();
     }
 
+
+    public void setUsername(String uid, UserManager.GetUsernameCallback callback) {
+        userManager.getUsername(uid, new UserManager.GetUsernameCallback() {
+            @Override
+            public void onUsernameReceived(String name) {
+                callback.onUsernameReceived(name);
+            }
+
+            @Override
+            public void onCancelled(String error) {
+                callback.onCancelled(error);
+            }
+        });
+    }
 }

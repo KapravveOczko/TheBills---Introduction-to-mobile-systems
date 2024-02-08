@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thebills.R;
+import com.example.thebills.UserManager;
 import com.example.thebills.room.RoomRecycleViewEvent;
 import com.example.thebills.room.RoomManager;
 import com.example.thebills.room.RoomManagerCreateRoom;
@@ -33,13 +34,14 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
     Button buttonLogout;
     Button buttonCreateRoom;
     Button buttonJoinRoom;
-    TextView textViewEmail;
+    TextView textViewUsername;
     ProgressBar progressBar;
-
 
     FirebaseAuth auth;
     FirebaseUser user;
     RoomManager roomManager;
+    UserManager userManager;
+
     Context context;
     Button refresh;
     List<String> keys;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
 
         context = this;
         roomManager = new RoomManager();
+        userManager = new UserManager();
 
         progressBar = findViewById(R.id.progressBarRooms);
         progressBar.setVisibility(View.VISIBLE);
@@ -61,18 +64,13 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         buttonLogout = findViewById(R.id.buttonLogout);
         buttonCreateRoom = findViewById(R.id.buttonCreateRoom);
         buttonJoinRoom = findViewById(R.id.buttonJoinRoom);
-        textViewEmail = findViewById(R.id.textViewEmail);
+        textViewUsername = findViewById(R.id.textViewUsername);
         user = auth.getCurrentUser();
-
-//        RecyclerView recyclerView = findViewById(R.id.roomRecycleView);
-
 
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
-        } else {
-            textViewEmail.setText(user.getUid());
         }
 
         setRecycleView();
@@ -106,6 +104,18 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
             @Override
             public void onClick(View v) {
                 openDialogJoinRoom();
+            }
+        });
+
+        setUsername(new UserManager.GetUsernameCallback() {
+            @Override
+            public void onUsernameReceived(String name) {
+                textViewUsername.setText(name);
+            }
+
+            @Override
+            public void onCancelled(String error) {
+                Toast.makeText(MainActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -149,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         roomManager.getUserRooms(new RoomManager.GetUserRoomsCallback() {
 
             RecyclerView recyclerView = findViewById(R.id.roomRecycleView);
+
             @Override
             public void onRoomsReceived(Map<String, String> roomMap) {
                 progressBar.setVisibility(View.INVISIBLE);
@@ -161,7 +172,21 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
 
             @Override
             public void onCancelled(String error) {
-                Log.d("MainActivity", "Błąd: " + error);
+                Log.d("MainActivity", "error: " + error);
+            }
+        });
+    }
+
+    public void setUsername(UserManager.GetUsernameCallback callback) {
+        userManager.getUsername(user.getUid(), new UserManager.GetUsernameCallback() {
+            @Override
+            public void onUsernameReceived(String name) {
+                callback.onUsernameReceived(name);
+            }
+
+            @Override
+            public void onCancelled(String error) {
+                callback.onCancelled(error);
             }
         });
     }

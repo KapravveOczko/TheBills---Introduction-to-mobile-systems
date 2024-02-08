@@ -7,17 +7,17 @@
 
 
     <TextView
-        android:id="@+id/textViewEmail"
+        android:id="@+id/textViewUsername"
         android:layout_width="283dp"
         android:layout_height="38dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="6dp"
-        android:contentDescription="Email Text"
-        android:text="email"
-        android:textSize="30dp"
+        android:contentDescription="your username"
+        android:text="username"
         android:textAlignment="center"
+        android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonRefresh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUsername"
         app:layout_constraintVertical_bias="0.954"
         tools:ignore="MissingConstraints"
         android:contentDescription="Logout Button"/>
@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUsername"
         tools:ignore="MissingConstraints"
         android:contentDescription="Room RecyclerView"/>
 
@@ -116,7 +116,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonCreateRoom"
         app:layout_constraintEnd_toStartOf="@+id/buttonCreateRoom"
         app:layout_constraintStart_toEndOf="@+id/buttonJoinRoom"
-        app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUsername"
         android:contentDescription="Refresh Button"/>
 
 
