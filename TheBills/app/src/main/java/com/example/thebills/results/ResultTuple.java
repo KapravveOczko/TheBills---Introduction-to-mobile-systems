@@ -1,15 +1,19 @@
 package com.example.thebills.results;
 
+import com.example.thebills.UserManager;
+
 import java.util.Map;
 
 public class ResultTuple {
 
     private String owner;
     private Map<String, Double> ownerCostMap;
+    private UserManager userManager;
 
-    public ResultTuple(String owner, Map<String, Double> ownerCostMap) {
+    public ResultTuple(String owner, Map<String, Double> ownerCostMap, UserManager userManager) {
         this.owner = owner;
         this.ownerCostMap = ownerCostMap;
+        this.userManager = userManager;
     }
 
     public String getOwner() {

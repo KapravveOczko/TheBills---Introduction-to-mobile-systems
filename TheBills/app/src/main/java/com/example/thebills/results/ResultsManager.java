@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.thebills.R;
+import com.example.thebills.UserManager;
 import com.example.thebills.bill.BillManager;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class ResultsManager {
     private List<ResultTuple> resultList = new ArrayList<>();
     private Set<String> uniqueOwners = new HashSet<>();
     private int billsReceivedCount = 0; // bill counter
+    private UserManager userManager = new UserManager();
 
     public ResultsManager(TextView resultsTextField) {
         this.resultsTextField = resultsTextField;
@@ -122,7 +124,7 @@ public class ResultsManager {
                 Log.d("LOGIC  DEBUG", "User: " + entry.getKey() + ", Total Cost: " + entry.getValue());
             }
 
-            resultList.add(new ResultTuple(owner,userTotalmap));
+            resultList.add(new ResultTuple(owner,userTotalmap, userManager));
 
         }
 

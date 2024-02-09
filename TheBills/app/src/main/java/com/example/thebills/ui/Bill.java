@@ -22,9 +22,9 @@ import com.example.thebills.remover.Remover;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class Bill extends AppCompatActivity implements BillManager.GetBillDataCallback{
 
@@ -118,13 +118,13 @@ public class Bill extends AppCompatActivity implements BillManager.GetBillDataCa
     }
 
     private String convertMapToTimestamp(Map<String, Object> createDateMap) {
-        int year = ((Long) createDateMap.get("year")).intValue();
-        int month = ((Long) createDateMap.get("month")).intValue();
-        int day = ((Long) createDateMap.get("day")).intValue();
-        int hours = ((Long) createDateMap.get("hours")).intValue();
-        int minutes = ((Long) createDateMap.get("minutes")).intValue();
-        int seconds = ((Long) createDateMap.get("seconds")).intValue();
-        int nanos = ((Long) createDateMap.get("nanos")).intValue();
+        int year = ((Long) Objects.requireNonNull(createDateMap.get("year"))).intValue();
+        int month = ((Long) Objects.requireNonNull(createDateMap.get("month"))).intValue();
+        int day = ((Long) Objects.requireNonNull(createDateMap.get("day"))).intValue();
+        int hours = ((Long) Objects.requireNonNull(createDateMap.get("hours"))).intValue();
+        int minutes = ((Long) Objects.requireNonNull(createDateMap.get("minutes"))).intValue();
+        int seconds = ((Long) Objects.requireNonNull(createDateMap.get("seconds"))).intValue();
+        int nanos = ((Long) Objects.requireNonNull(createDateMap.get("nanos"))).intValue();
 
         Timestamp timestamp = new Timestamp(year, month, day, hours, minutes, seconds, nanos);
 
