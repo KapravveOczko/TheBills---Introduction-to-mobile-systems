@@ -3,7 +3,6 @@ package com.example.thebills.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.thebills.R;
 import com.example.thebills.UserManager;
 import com.example.thebills.room.RoomRecycleViewEvent;
@@ -24,28 +22,33 @@ import com.example.thebills.room.RoomManagerJoinRoom;
 import com.example.thebills.room.RoomManagerRecycleViewAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements RoomRecycleViewEvent {
 
+    // UI elements
     Button buttonLogout;
     Button buttonCreateRoom;
     Button buttonJoinRoom;
     TextView textViewUsername;
     ProgressBar progressBar;
+    Button refresh;
 
+    // Firebase
     FirebaseAuth auth;
     FirebaseUser user;
+
+    // Managers
     RoomManager roomManager;
     UserManager userManager;
 
+    // Context
     Context context;
-    Button refresh;
-    List<String> keys;
 
+    // Room keys
+    List<String> keys;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -53,60 +56,49 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize context, room manager, and user manager
         context = this;
         roomManager = new RoomManager();
         userManager = new UserManager();
 
-        progressBar = findViewById(R.id.progressBarRooms);
-        progressBar.setVisibility(View.VISIBLE);
-
+        // Initialize Firebase Authentication instance and get the current user
         auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+        // Find views by their IDs
+        progressBar = findViewById(R.id.progressBarRooms);
         buttonLogout = findViewById(R.id.buttonLogout);
         buttonCreateRoom = findViewById(R.id.buttonCreateRoom);
         buttonJoinRoom = findViewById(R.id.buttonJoinRoom);
         textViewUsername = findViewById(R.id.textViewUsername);
-        user = auth.getCurrentUser();
 
+        // Check if the user is logged in, if not, redirect to the Login activity
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
         }
 
+        // Set up RecyclerView
         setRecycleView();
 
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                finish();
-            }
+        // Set onClickListener for logout button
+        buttonLogout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
+            finish();
         });
 
+        // Set onClickListener for refresh button to recreate activity
         refresh = findViewById(R.id.buttonRefresh);
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recreate();
-            }
-        });
+        refresh.setOnClickListener(v -> recreate());
 
-        buttonCreateRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialogCreateRoom();
-            }
-        });
+        // Set onClickListeners for creating and joining room buttons
+        buttonCreateRoom.setOnClickListener(v -> openDialogCreateRoom());
+        buttonJoinRoom.setOnClickListener(v -> openDialogJoinRoom());
 
-        buttonJoinRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialogJoinRoom();
-            }
-        });
-
+        // Set the username
         setUsername(new UserManager.GetUsernameCallback() {
             @Override
             public void onUsernameReceived(String name) {
@@ -120,12 +112,14 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         });
     }
 
+    // Refresh data when the activity resumes
     @Override
     protected void onResume() {
         super.onResume();
         refreshData();
     }
 
+    // Refresh RecyclerView data
     private void refreshData() {
         RecyclerView recyclerView = findViewById(R.id.roomRecycleView);
         if (recyclerView != null) {
@@ -133,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         }
     }
 
-
+    // Open join room dialog
     public void openDialogJoinRoom() {
         RoomManagerJoinRoom roomManagerJoinRoom = new RoomManagerJoinRoom();
         roomManagerJoinRoom.setContext(context);
@@ -141,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         roomManagerJoinRoom.show(getSupportFragmentManager(), "join room dialog");
     }
 
+    // Open create room dialog
     public void openDialogCreateRoom() {
         RoomManagerCreateRoom roomManagerCreateRoom = new RoomManagerCreateRoom();
         roomManagerCreateRoom.setContext(context);
@@ -148,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         roomManagerCreateRoom.show(getSupportFragmentManager(), "create room dialog");
     }
 
+    // Handle RecyclerView item click event
     @Override
     public void onItemClick(int position) {
         String roomKey = keys.get(position);
@@ -155,9 +151,9 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         roomManager.moveToRoomActivity(context, roomKey);
     }
 
+    // Set up RecyclerView
     public void setRecycleView() {
         roomManager.getUserRooms(new RoomManager.GetUserRoomsCallback() {
-
             RecyclerView recyclerView = findViewById(R.id.roomRecycleView);
 
             @Override
@@ -172,11 +168,12 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
 
             @Override
             public void onCancelled(String error) {
-                Log.d("MainActivity", "error: " + error);
+                Log.d("TheBills: MainActivity activity", "error: " + error);
             }
         });
     }
 
+    // Set the username
     public void setUsername(UserManager.GetUsernameCallback callback) {
         userManager.getUsername(user.getUid(), new UserManager.GetUsernameCallback() {
             @Override

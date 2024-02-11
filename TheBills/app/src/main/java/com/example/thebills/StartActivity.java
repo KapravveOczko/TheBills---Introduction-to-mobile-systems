@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.example.thebills.ui.Login;
 
+// displays entry screen (logo)
 public class StartActivity extends AppCompatActivity {
 
     Button start;

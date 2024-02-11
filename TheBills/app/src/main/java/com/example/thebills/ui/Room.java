@@ -1,13 +1,12 @@
 package com.example.thebills.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.thebills.R;
 import com.example.thebills.remover.Remover;
@@ -25,7 +24,6 @@ public class Room extends AppCompatActivity {
     TextView textViewResult;
     String user;
     Remover remover;
-
     ResultsManager resultsManager;
 
     @Override
@@ -33,48 +31,42 @@ public class Room extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room);
 
+        // Retrieve roomKey from intent
         try {
             Intent intent = getIntent();
             roomKey = intent.getStringExtra("roomId");
             Log.d("TheBills: Room activity", "entered room: " + roomKey);
         } catch (NullPointerException e){
+            // If roomKey is not passed, redirect to MainActivity
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
 
-        remover = new Remover(this);
-
+        remover = new Remover(this); // Initialize Remover
         textViewResult = findViewById(R.id.textViewResult);
         resultsManager = new ResultsManager(textViewResult);
-
         moveToBills = findViewById(R.id.buttonShowBills);
         delete = findViewById(R.id.buttonLeaveRoom);
-
         resultsManager.getBillsForRoom(roomKey);
         user = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         roomName = findViewById(R.id.RoomName);
 
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                remover.leaveRoom(roomKey, user);
-                moveAfterLeaving();
-            }
+        // Click listener for leave room button
+        delete.setOnClickListener(v -> {
+            remover.leaveRoom(roomKey, user);
+            moveAfterLeaving();
         });
 
-        moveToBills.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BillsView.class);
-                intent.putExtra("roomId", roomKey);
-                startActivity(intent);
-//                finish(); <- because we would like to return here
-            }
+        // Click listener for moving to bills view button
+        moveToBills.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), BillsView.class);
+            intent.putExtra("roomId", roomKey);
+            startActivity(intent);
         });
 
         RoomManager roomManager = new RoomManager();
+        // Retrieve room name from database
         roomManager.getRoomsName(roomKey, new RoomManager.GetRoomsNameCallback() {
             @Override
             public void onRoomsNameReceived(String name) {
@@ -90,20 +82,11 @@ public class Room extends AppCompatActivity {
 
     }
 
+    // Method to redirect to MainActivity after leaving the room
     private void moveAfterLeaving(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
-//    @Override
-//    public void onRoomsNameReceived(String name) {
-//        Log.d("auwhwduahwuw", "awuidhawuiwdah");
-//        roomName.setText(name);
-//    }
-//
-//    @Override
-//    public void onCancelled(String error) {
-//
-//    }
 }

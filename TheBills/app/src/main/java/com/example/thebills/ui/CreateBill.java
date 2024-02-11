@@ -31,8 +31,7 @@ import java.util.Map;
 
 public class CreateBill extends AppCompatActivity {
 
-    String roomKey;
-
+    // UI elements
     ProgressBar progressBar;
     Button autoCalculate;
     Button acceptCost;
@@ -40,15 +39,13 @@ public class CreateBill extends AppCompatActivity {
     TextView date;
     TextInputEditText billName;
     TextInputEditText billTotalCost;
-
-    BillManager billManager;
-    Context context;
     FirebaseAuth auth;
     FirebaseUser user;
+    String roomKey;
     Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-
+    BillManager billManager;
     UserManager userManager;
-
+    Context context;
     List<String> users;
     CostRecycleViewAdapter adapter;
 
@@ -56,21 +53,24 @@ public class CreateBill extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bill);
+
+        // Initialize Firebase Authentication instance
         auth = FirebaseAuth.getInstance();
 
+        // Get room key from intent
         Intent intent = getIntent();
         roomKey = intent.getStringExtra("roomId");
-        Log.d("TheBills: BillView activity", "we are in room: " + roomKey);
+        Log.d("TheBills: CreateBill activity", "in room: " + roomKey);
 
+        // Initialize context, managers, and set current room key
         context = this;
         billManager = new BillManager();
         billManager.setCurrentRoom(roomKey);
         userManager = new UserManager();
 
+        // Find views by their IDs
         owner = findViewById(R.id.textViewOwner);
         user = auth.getCurrentUser();
-
-        // to do wyjebania
         owner.setText(user.getUid());
 
         date = findViewById(R.id.textViewDate);
@@ -84,59 +84,47 @@ public class CreateBill extends AppCompatActivity {
         autoCalculate = findViewById(R.id.buttonAutoCalculateCost);
         acceptCost = findViewById(R.id.buttonCalculateCost);
 
-        // it's not a bug it's a feature
-        // 1 click -> all to owner
-        // 2 click -> equal distribution
-        autoCalculate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // Auto-calculate cost button functionality
+        autoCalculate.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(billTotalCost.getText())) {
+                Toast.makeText(context, "total cost is null", Toast.LENGTH_SHORT).show();
+            } else {
+                Double totalCost = Double.parseDouble(billTotalCost.getText().toString());
+                adapter.setLocalCostsMapAutoCalc(totalCost);
+                adapter.setLocalCostsMapAutoCalc(totalCost);
+            }
+        });
+
+        // Accept cost button functionality
+        acceptCost.setOnClickListener(v -> {
+            Map<String, Double> localCostsMap = adapter.getLocalCostsMap();
+
+            for (Map.Entry<String, Double> entry : localCostsMap.entrySet()) {
+                Log.d("TheBills: CreateBill activity", "Local cost map entry: User: " + entry.getKey() + ", Cost: " + entry.getValue());
+            }
+
+            if (TextUtils.isEmpty(billName.getText())){
+                Toast.makeText(context, "bill name is null", Toast.LENGTH_SHORT).show();
+            } else {
                 if (TextUtils.isEmpty(billTotalCost.getText())) {
                     Toast.makeText(context, "total cost is null", Toast.LENGTH_SHORT).show();
                 } else {
                     Double totalCost = Double.parseDouble(billTotalCost.getText().toString());
-                    adapter.setLocalCostsMapAutoCalc(totalCost);
-                    adapter.setLocalCostsMapAutoCalc(totalCost);
-                }
-            }
-        });
-
-        acceptCost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Double> localCostsMap = adapter.getLocalCostsMap();
-
-                for (Map.Entry<String, Double> entry : localCostsMap.entrySet()) {
-                    Log.d("LocalCostsMap", "User: " + entry.getKey() + ", Cost: " + entry.getValue());
-                }
-
-                if (TextUtils.isEmpty(billName.getText())){
-                    Toast.makeText(context, "bill name is null", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (TextUtils.isEmpty(billTotalCost.getText())) {
-                        Toast.makeText(context, "total cost is null", Toast.LENGTH_SHORT).show();
+                    if (Math.abs(totalCost - adapter.getLocalCostMapSum()) > 0.01){
+                        Toast.makeText(context, "total cost is not equal to given cost", Toast.LENGTH_SHORT).show();
                     } else {
-                        Double totalCost = Double.parseDouble(billTotalCost.getText().toString());
-//                        if (totalCost != adapter.getLocalCostMapSum()) {
-                        if (Math.abs(totalCost - adapter.getLocalCostMapSum()) > 0.01){
-                            Toast.makeText(context, "total cost is not equal to given cost", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            billManager.addBill(roomKey,adapter.getLocalCostsMap(),currentTime,totalCost,billName.getText().toString(), user.getUid());
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(context, "bill created and added", Toast.LENGTH_SHORT).show();
-                                    moveToRoom();
-                                }
-                            }, 500);
-                        }
+                        // Add bill to the database
+                        billManager.addBill(roomKey, adapter.getLocalCostsMap(), currentTime, totalCost, billName.getText().toString(), user.getUid());
+                        new Handler().postDelayed(() -> {
+                            Toast.makeText(context, "bill created and added", Toast.LENGTH_SHORT).show();
+                            moveToRoom();
+                        }, 500);
                     }
                 }
-
             }
         });
 
+        // Set owner's username
         setUsername(new UserManager.GetUsernameCallback() {
             @Override
             public void onUsernameReceived(String name) {
@@ -148,10 +136,10 @@ public class CreateBill extends AppCompatActivity {
                 Toast.makeText(CreateBill.this, "Error: " + error, Toast.LENGTH_SHORT).show();
             }
         });
-
         setRecycleView();
     }
 
+    // Set up the RecyclerView for displaying users in the current room
     public void setRecycleView() {
         billManager.getRoomUsers(new BillManager.GetRoomUsersCallback() {
             RecyclerView recyclerView = findViewById(R.id.costRecyclerView);
@@ -162,24 +150,18 @@ public class CreateBill extends AppCompatActivity {
                 users = new ArrayList<>(usersMap.keySet());
                 adapter = new CostRecycleViewAdapter(context, usersMap);
 
-//                adapter.setCostChangeListener(new CostRecycleViewAdapter.CostChangeListener() {
-//                    @Override
-//                    public void onCostChanged(String userId, String newCost) {
-//                        updateCostInDatabase(userId, newCost);
-//                    }
-//                });
-
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             }
 
             @Override
             public void onCancelled(String error) {
-                Log.d("MainActivity", "error: " + error);
+                Log.d("TheBills: CreateBill activity", "error: " + error);
             }
         });
     }
 
+    // Move to the Room activity
     public void moveToRoom(){
         Intent intent = new Intent(context, Room.class);
         intent.putExtra("roomId", roomKey);
@@ -187,6 +169,7 @@ public class CreateBill extends AppCompatActivity {
         finish();
     }
 
+    // Set the current user's username
     public void setUsername(UserManager.GetUsernameCallback callback) {
         userManager.getUsername(user.getUid(), new UserManager.GetUsernameCallback() {
             @Override
@@ -200,6 +183,4 @@ public class CreateBill extends AppCompatActivity {
             }
         });
     }
-
-
 }
