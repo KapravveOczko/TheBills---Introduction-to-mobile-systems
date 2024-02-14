@@ -3,8 +3,6 @@ package com.example.thebills.results;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.thebills.R;
-import com.example.thebills.UserManager;
 import com.example.thebills.bill.BillManager;
 
 import java.util.ArrayList;
@@ -14,46 +12,43 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+// Class responsible for managing results
 public class ResultsManager {
 
-    private BillManager billManager = new BillManager();
-    private List<BillTuple> billList = new ArrayList<>();
-    private List<ResultTuple> resultList = new ArrayList<>();
-    private Set<String> uniqueOwners = new HashSet<>();
-    private int billsReceivedCount = 0; // bill counter
-    private UserManager userManager = new UserManager();
+    private final BillManager billManager = new BillManager(); // Instance of BillManager to handle bills
+    private final List<BillTuple> billList = new ArrayList<>(); // List to store bill tuples
+    private final List<ResultTuple> resultList = new ArrayList<>(); // List to store result tuples
+    private final Set<String> uniqueOwners = new HashSet<>(); // Set to store unique owners
+    private int billsReceivedCount = 0; // Counter for received bills
 
+    private TextView resultsTextField; // TextView to display results
+
+    // Constructor to initialize ResultsManager with a TextView to display results
     public ResultsManager(TextView resultsTextField) {
         this.resultsTextField = resultsTextField;
     }
-    TextView resultsTextField;
 
-
+    // Method to retrieve bills for a given room
     public void getBillsForRoom(String roomKey) {
         billManager.getRoomBills(roomKey, new BillManager.GetRoomBillsCallback() {
             @Override
             public void onBillsReceived(Map<String, String> billMap) {
                 List<String> billKeys = new ArrayList<>(billMap.keySet());
-
                 billsReceivedCount = 0;
 
                 // Iterate through each bill key
                 for (String billKey : billKeys) {
-                    Log.d("ResultsManager", "bill keys: " + billKey);
                     billManager.getBillData(billKey, new BillManager.GetBillDataCallback() {
                         @Override
                         public void onBillDataReceived(Map<String, Object> billData) {
                             Map<String, Double> costMap = (Map<String, Double>) billData.get("costMap");
                             String billOwner = (String) billData.get("billOwner");
 
-                            Log.d("ResultsManager - costMap", costMap.toString());
-                            Log.d("ResultsManager - billOwner", billOwner);
-                            Log.d("ResultsManager", "bill received");
-
                             uniqueOwners.add(billOwner);
                             billList.add(new BillTuple(billOwner, costMap));
                             billsReceivedCount++;
 
+                            // Perform operation after all bills are received
                             if (billsReceivedCount == billKeys.size()) {
                                 performOperationAfterBillsReceived();
                             }
@@ -61,6 +56,7 @@ public class ResultsManager {
 
                         @Override
                         public void onCancelled(String error) {
+                            // Handle cancellation
                         }
                     });
                 }
@@ -68,46 +64,45 @@ public class ResultsManager {
 
             @Override
             public void onCancelled(String error) {
+                // Handle cancellation
             }
         });
     }
 
+    // Method to perform operations after all bills are received
     private void performOperationAfterBillsReceived() {
-        Log.d("ResultsManager", "All bills received. Performing the operation...");
-
         getOwners();
         getBills();
         logic();
         resultsTextField.setText(getAllToString());
-
     }
 
+    // Method to log unique owners
     private void getOwners() {
         for (String owner : uniqueOwners) {
-            Log.d("DEBUG  - Owners", owner);
+            Log.d("TheBills: ResultManager", "owner: " + owner);
         }
     }
 
+    // Method to log received bills
     public void getBills() {
-        Log.d("DEBUG      ResultsManager", "size: " + billList.size());
+        Log.d("TheBills: ResultManager", "billList size: " + billList.size());
         for (int i = 0; i < billList.size(); i++) {
-            Log.d("DEBUG      ResultsManager", "bill: " + billList.get(i).toString());
+            Log.d("TheBills: ResultManager", "bill: " + billList.get(i).toString());
         }
     }
 
-    public void logic(){
-
+    // Method to perform logic for calculating results
+    public void logic() {
         for (String owner : uniqueOwners) {
             Map<String, Double> userTotalmap = new HashMap<>();
 
             for (int i = 0; i < billList.size(); i++) {
-                if(billList.get(i).getOwner().equals(owner)){
-                    Log.d("LOGIC  DEBUG", "owner of the bill: " + owner);
-
+                if (billList.get(i).getOwner().equals(owner)) {
                     Map<String, Double> singleBillMap = billList.get(i).getCostmap();
 
-                    for (String key :  singleBillMap.keySet()) {
-                        // checking if key exists
+                    for (String key : singleBillMap.keySet()) {
+                        // Checking if key exists
                         if (userTotalmap.containsKey(key)) {
                             Double existingValue = userTotalmap.get(key);
                             Double billValue = singleBillMap.get(key);
@@ -119,19 +114,17 @@ public class ResultsManager {
                 }
             }
 
-            // user total map logs
+            // Log user total map
             for (Map.Entry<String, Double> entry : userTotalmap.entrySet()) {
-                Log.d("LOGIC  DEBUG", "User: " + entry.getKey() + ", Total Cost: " + entry.getValue());
+                Log.d("TheBills: ResultManager", "User: " + entry.getKey() + ", Total Cost: " + entry.getValue());
             }
 
-            resultList.add(new ResultTuple(owner,userTotalmap, userManager));
-
+            resultList.add(new ResultTuple(owner, userTotalmap));
         }
-
     }
 
-    public String getAllToString(){
-
+    // Method to convert all results to a string
+    public String getAllToString() {
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < resultList.size(); i++) {
@@ -144,5 +137,4 @@ public class ResultsManager {
 
         return result.toString();
     }
-
 }

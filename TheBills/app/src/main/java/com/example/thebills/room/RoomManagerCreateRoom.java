@@ -3,33 +3,25 @@ package com.example.thebills.room;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.thebills.R;
-import com.example.thebills.ui.MainActivity;
-import com.google.firebase.database.DatabaseReference;
-
 
 public class RoomManagerCreateRoom extends AppCompatDialogFragment {
 
     private RoomManager roomManager;
     private EditText editTextRoomName;
-
     private Context context;
 
-    public RoomManagerCreateRoom() {
-
-    }
+    public RoomManagerCreateRoom() {}
 
     public void setContext(Context context) {
         this.context = context;
@@ -39,10 +31,7 @@ public class RoomManagerCreateRoom extends AppCompatDialogFragment {
         this.roomManager = roomManager;
     }
 
-    public RoomManagerCreateRoom(RoomManager roomManager) {
-        this.roomManager = roomManager;
-    }
-
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -52,32 +41,24 @@ public class RoomManagerCreateRoom extends AppCompatDialogFragment {
 
         builder.setView(view)
                 .setTitle("Create New Room")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    // Do nothing if Cancel button is clicked
                 })
-                .setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        createNewRoom();
-                    }
-                });
+                .setPositiveButton("Create", (dialog, which) -> createNewRoom());
 
         editTextRoomName = view.findViewById(R.id.editTextRoomName);
 
         return builder.create();
     }
 
+    // Method to create a new room
     private void createNewRoom() {
         String roomName = editTextRoomName.getText().toString().trim();
-        Log.d("TheBills - createNewRoom", "process of room creating started");
+        Log.d("TheBills: RoomManagerCreateRoom", "process of room creating started");
 
         if (!roomName.isEmpty()) {
             roomManager.createNewRoom(roomName);
-//            roomManager.moveToRoomActivity(this.context);
+            // roomManager.moveToRoomActivity(this.context);
         }
     }
-
-
 }

@@ -3,6 +3,7 @@ package com.example.thebills.room;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,39 +18,34 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RoomManager {
 
+    // Constants for Firebase database
     private static final String DATABASE_URL = "https://thebills-66df6-default-rtdb.europe-west1.firebasedatabase.app";
     private static final String ROOMS_REFERENCE = "rooms";
     private static final String USERS_REFERENCE = "users";
 
-    private FirebaseAuth auth;
+    // Firebase Authentication instance and current user
+    private final FirebaseAuth auth;
     private FirebaseUser currentUser;
 
-    private DatabaseReference roomsRef;
-    private DatabaseReference appUsersRef;
+    // Database references
+    private final DatabaseReference roomsRef;
+    private final DatabaseReference appUsersRef;
 
+    // Context variable for Toast messages
     private Context context;
 
-
-    private Map<String, String> dataMap = null;
-
+    // Method to set the context
     public void setContext(Context context) {
         this.context = context;
     }
 
-
-    public Map<String, String> getDataMap() {
-        return dataMap;
-    }
-
-    public void setDataMap(Map<String, String> dataMap) {
-        this.dataMap = dataMap;
-    }
-
+    // Constructor initializes Firebase instances and database references
     public RoomManager() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -57,39 +53,59 @@ public class RoomManager {
         appUsersRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(USERS_REFERENCE);
     }
 
+    // Method to move to the Room activity
     public void moveToRoomActivity(Context context, String roomId) {
-        if (context != null && context instanceof AppCompatActivity) {
+        if (context instanceof AppCompatActivity) {
             Intent intent = new Intent(context, Room.class);
             intent.putExtra("roomId",roomId);
-            ((AppCompatActivity) context).startActivity(intent);
+            context.startActivity(intent);
         }
     }
+
+    // Method to add a room to the list of rooms for the current user
     public void addRoomToUser(String roomKey, String roomName) {
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put(roomKey, roomName);
         appUsersRef.child(currentUser.getUid()).child("rooms").updateChildren(updateMap);
     }
 
+    // Method to add the current user to the specified room
     public void addUserToRoom(String roomId) {
         DatabaseReference usersRef = roomsRef.child(roomId).child("users");
         usersRef.child(currentUser.getUid()).setValue(true);
     }
 
+    // Method to create a new room
     public void createNewRoom(String roomName) {
         String roomKey = roomsRef.push().getKey();
-        RoomTuple newRoom = new RoomTuple(roomKey, roomName, currentUser.getUid());
+        Map<String, Object> newRoomData = new HashMap<>();
+        newRoomData.put("roomId", roomKey);
+        newRoomData.put("roomName", roomName);
+        newRoomData.put("ownerId", currentUser.getUid());
+        newRoomData.put("createDate", new Timestamp(System.currentTimeMillis()));
 
-        roomsRef.child(roomKey).setValue(newRoom).addOnCompleteListener(unused -> {
-            addUserToRoom(roomKey);
-            addRoomToUser(roomKey, roomName);
+        Map<String, Boolean> users = new HashMap<>();
+        users.put(currentUser.getUid(), true);
+
+        newRoomData.put("users", users);
+
+        roomsRef.child(roomKey).setValue(newRoomData).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                addUserToRoom(roomKey);
+                addRoomToUser(roomKey, roomName);
+                Log.d("TheBills: RoomManager", "New room created successfully");
+            } else {
+                Log.d("TheBills: RoomManager", "Failed to create new room");
+            }
         });
     }
 
+    // Method to join a room
     public void joinRoom(String desiredRoomKey) {
         roomsRef.child(desiredRoomKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("TheBills - joinRoom", "query done");
+                Log.d("TheBills: RoomManager", "joinRoom: query done");
                 if (dataSnapshot.exists()) {
                     String roomId = dataSnapshot.getKey();
                     String roomName = dataSnapshot.child("roomName").getValue(String.class);
@@ -99,60 +115,59 @@ public class RoomManager {
                         addUserToRoom(roomId);
                     }
                 } else {
-                    Log.d("TheBills - joinRoom", "Room not found");
+                    Log.d("TheBills: RoomManager", "joinRoom: Room not found");
+                    Toast.makeText(context, "Room not found!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("TheBills - joinRoom", "database error");
+                Log.d("TheBills: RoomManager", "error " + databaseError);
             }
         });
     }
 
+    // Interface for receiving user rooms
     public interface GetUserRoomsCallback {
         void onRoomsReceived(Map<String, String> roomMap);
         void onCancelled(String error);
     }
 
-
+    // Method to get user rooms
     public void getUserRooms(GetUserRoomsCallback callback) {
         appUsersRef.child(currentUser.getUid()).child("rooms").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("TheBills - joinRoom", "query done");
+                Log.d("TheBills: RoomManager", "query done: " + dataSnapshot);
 
                 GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {};
                 Map<String, String> dataMap = dataSnapshot.getValue(genericTypeIndicator);
 
                 if (dataMap != null) {
-//                    Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
                     callback.onRoomsReceived(dataMap);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("TheBills - joinRoom", "database error");
+                Log.d("TheBills: RoomManager", "error " + databaseError);
                 callback.onCancelled(databaseError.getMessage());
             }
         });
     }
 
-    ///////////////////
-    // getting rooms name
-
+    // Interface for receiving room names
     public interface GetRoomsNameCallback {
         void onRoomsNameReceived(String name);
         void onCancelled(String error);
     }
 
-
+    // Method to get room name
     public void getRoomsName(String roomId, GetRoomsNameCallback callback) {
         roomsRef.child(roomId).child("roomName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("TheBills - get room name", "query done");
+                Log.d("TheBills: RoomManager", "getRoomsName: query done");
 
                 String roomName = dataSnapshot.getValue(String.class);
 
@@ -169,6 +184,4 @@ public class RoomManager {
             }
         });
     }
-
-
 }

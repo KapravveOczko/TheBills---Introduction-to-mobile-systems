@@ -1,3 +1,4 @@
+// Package declaration and imports
 package com.example.thebills.bill;
 
 import android.content.Context;
@@ -18,28 +19,30 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
+// Class for managing bill-related operations
 public class BillManager {
 
+    // Firebase database URLs and references
     private static final String DATABASE_URL = "https://thebills-66df6-default-rtdb.europe-west1.firebasedatabase.app";
-
     private static final String ROOMS_REFERENCE = "rooms";
     private static final String USERS_REFERENCE = "users";
     private static final String BILLS_REFERENCE = "bills";
 
-    private FirebaseAuth auth;
-    private FirebaseUser currentUser;
-
-    private DatabaseReference roomsRef;
-    private DatabaseReference appUsersRef;
-    private DatabaseReference billsRef;
+    private final FirebaseAuth auth;
+    private final FirebaseUser currentUser;
+    private final DatabaseReference roomsRef;
+    private final DatabaseReference appUsersRef;
+    private final DatabaseReference billsRef;
 
     private Context context;
     private String currentRoom;
 
+    // Setter method to set the context
     public void setContext(Context context) {
         this.context = context;
     }
 
+    // Constructor to initialize FirebaseAuth, FirebaseUser, and Firebase database references
     public BillManager() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -48,6 +51,7 @@ public class BillManager {
         billsRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference(BILLS_REFERENCE);
     }
 
+    // Getter and setter methods for the current room
     public String getCurrentRoom() {
         return currentRoom;
     }
@@ -56,29 +60,31 @@ public class BillManager {
         this.currentRoom = currentRoom;
     }
 
+    // Interface for callback to get room users
     public interface GetRoomUsersCallback {
         void onUsersReceived(Map<String, Boolean> usersMap);
         void onCancelled(String error);
     }
 
+    // Method to get room users
     public void getRoomUsers(BillManager.GetRoomUsersCallback callback) {
         roomsRef.child(getCurrentRoom()).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("TheBills - room users", "query done");
+                Log.d("TheBills: BillManager", "room users - query done");
 
                 GenericTypeIndicator<Map<String, Boolean>> genericTypeIndicator = new GenericTypeIndicator<Map<String, Boolean>>() {};
                 Map<String, Boolean> dataMap = dataSnapshot.getValue(genericTypeIndicator);
 
                 if (dataMap != null) {
-                    Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
+                    Log.d("TheBills: BillManager", "Firebase, Data as map: " + dataMap);
                     callback.onUsersReceived(dataMap);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("TheBills - joinRoom", "database error");
+                Log.d("TheBills: BillManager", "database error");
                 callback.onCancelled(databaseError.getMessage());
             }
         });
@@ -86,6 +92,7 @@ public class BillManager {
 
     ///////////////////////////////////////////////////////////////////////////
 
+    // Method to add a bill
     public void addBill(String roomKey, Map<String, Double> localCostMap, Timestamp createDate, Double totalCost, String billName, String billOwner) {
         String billKey = billsRef.push().getKey();
 
@@ -111,12 +118,14 @@ public class BillManager {
         });
     }
 
+    // Method to add a bill to a user
     public void addBillToUser(String billKey, String userKey) {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(billKey, true);
         appUsersRef.child(userKey).child("bills").updateChildren(childUpdates);
     }
 
+    // Method to add a bill to a room
     public void addBillToRoom(String billKey, String roomKey, String billName) {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(billKey, billName);
@@ -124,71 +133,72 @@ public class BillManager {
     }
 
     ///////////////////////////////////////////////////////////////////////////
-//    pobieranie rachunków dla pokoju
+//    Method to get room bills
 
+    // Interface for callback to get room bills
     public interface GetRoomBillsCallback {
         void onBillsReceived(Map<String, String> billMap);
         void onCancelled(String error);
     }
 
+    // Method to get room bills
     public void getRoomBills(String roomKey, GetRoomBillsCallback callback) {
         roomsRef.child(roomKey).child("bills").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("TheBills - billsView", "query done");
+                Log.d("TheBills: BillManager", "query done");
 
                 GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {};
                 Map<String, String> dataMap = dataSnapshot.getValue(genericTypeIndicator);
 
                 if (dataMap != null) {
-                    Log.d("Firebase", "Dane jako mapa: " + dataMap.toString());
+                    Log.d("TheBills: BillManager", "Firebase, Data as map: " + dataMap);
                     callback.onBillsReceived(dataMap);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("TheBills - billsView", "database error");
+                Log.d("TheBills: BillManager", "database error");
                 callback.onCancelled(databaseError.getMessage());
             }
         });
     }
 
     ///////////////////////////////////////////////////////////////////////////
-//  pobieranie danych o rachunku
+//  Method to get bill data
 
+    // Interface for callback to get bill data
     public interface GetBillDataCallback {
         void onBillDataReceived(Map<String, Object> billData);
         void onCancelled(String error);
     }
 
+    // Method to get bill data
     public void getBillData(String billId, GetBillDataCallback callback) {
         billsRef.child(billId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("TheBills - BillManager", "Query done");
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("TheBills: BillManager", "Query done");
 
                 GenericTypeIndicator<Map<String, Object>> genericTypeIndicator = new GenericTypeIndicator<Map<String, Object>>() {};
                 Map<String, Object> billData = dataSnapshot.getValue(genericTypeIndicator);
 
                 if (billData != null) {
-                    Log.d("Firebase", "Dane rachunku jako mapa: " + billData.toString());
+                    Log.d("TheBills: BillManager", "Firebase, Bill data as map: " + billData);
                     callback.onBillDataReceived(billData);
                 } else {
-                    Log.d("Firebase", "Brak danych dla rachunku o ID: " + billId);
+                    Log.d("TheBills: BillManager", "Firebase, No data for bill with ID: " + billId);
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("TheBills - BillManager", "Database error");
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("TheBills: BillManager", "Database error");
                 callback.onCancelled(databaseError.getMessage());
             }
         });
     }
 
     ///////////////////////////////////////////////////////////////////////////
-
-
-
 }

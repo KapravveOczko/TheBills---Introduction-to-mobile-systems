@@ -1,5 +1,7 @@
+// Package declaration and imports
 package com.example.thebills.bill;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,28 +21,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// Adapter class for managing cost-related RecyclerView items
 public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleViewAdapter.MyCostsViewHolder> {
 
-    private Context context;
-    private Map<String, Boolean> usersMap;
-    private Map<String, Double> localCostsMap;
+    private final Context context;
+    private final Map<String, Boolean> usersMap;
+    private final Map<String, Double> localCostsMap;
 
+    // Constructor to initialize the adapter with context and user map
     public CostRecycleViewAdapter(Context context, Map<String, Boolean> usersMap) {
         this.context = context;
         this.usersMap = usersMap;
         this.localCostsMap = new HashMap<>();
     }
 
+    // Interface for listening to cost changes
     public interface CostChangeListener {
         void onCostChanged(String userId, Double newCost);
     }
 
     private CostChangeListener costChangeListener;
 
+    // Method to set the cost change listener
     public void setCostChangeListener(CostChangeListener costChangeListener) {
         this.costChangeListener = costChangeListener;
     }
 
+    // Method to create view holder
     @NonNull
     @Override
     public MyCostsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,6 +56,7 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
         return new CostRecycleViewAdapter.MyCostsViewHolder(view);
     }
 
+    // Method to bind data to the view holder
     @Override
     public void onBindViewHolder(@NonNull MyCostsViewHolder holder, int position) {
         List<String> keys = new ArrayList<>(usersMap.keySet());
@@ -80,17 +88,19 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
         }
     }
 
+    // Method to get the item count
     @Override
     public int getItemCount() {
         return usersMap.size();
     }
 
-
+    // View holder class
     public static class MyCostsViewHolder extends RecyclerView.ViewHolder {
 
         public TextView user;
         public TextInputEditText cost;
 
+        // Constructor to initialize the view holder
         public MyCostsViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -99,14 +109,17 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
         }
     }
 
+    // Method to get the size of the local costs map
     public int getLocalCostsMapSize(){
         return localCostsMap.size();
     }
 
+    // Method to get the local costs map
     public Map<String, Double> getLocalCostsMap() {
         return localCostsMap;
     }
 
+    // Method to calculate the sum of local costs
     public Double getLocalCostMapSum() {
         Double sum = 0.0D;
         for (Map.Entry<String, Double> entry : localCostsMap.entrySet()) {
@@ -115,11 +128,12 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
         return sum;
     }
 
+    // Method to set local costs map with automatic calculation based on total cost
     public void setLocalCostsMapAutoCalc(Double totalCost) {
-        Log.d("LocalCostsMapBefore", "Before setting: " + localCostsMap.toString());
+        Log.d("TheBills: CostRecycleViewAdapter", "LocalCostsMap, Before setting: " + localCostsMap);
 
         int localCostsMapSize = getLocalCostsMapSize();
-        Log.d("LocalCostsMapSize", "Size: " + localCostsMapSize);
+        Log.d("TheBills: CostRecycleViewAdapter", "LocalCostsMapSize, Size: " + localCostsMapSize);
 
         if (localCostsMapSize > 0) {
             Double costPerUser = totalCost / localCostsMapSize;
@@ -131,15 +145,13 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
             }
         }
 
-        Log.d("LocalCostsMapAfter", "After setting: " + localCostsMap.toString());
+        Log.d("TheBills: CostRecycleViewAdapter", "LocalCostsMap, After setting: " + localCostsMap);
         refreshAdapter();
     }
 
-
+    // Method to refresh the adapter
+    @SuppressLint("NotifyDataSetChanged")
     public void refreshAdapter(){
         notifyDataSetChanged();
     }
-
-
-
 }

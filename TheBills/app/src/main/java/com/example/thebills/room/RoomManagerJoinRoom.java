@@ -3,17 +3,16 @@ package com.example.thebills.room;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.thebills.R;
-
 
 public class RoomManagerJoinRoom extends AppCompatDialogFragment {
 
@@ -21,10 +20,7 @@ public class RoomManagerJoinRoom extends AppCompatDialogFragment {
     private EditText editTextRoomKey;
     private Context context;
 
-
-    public RoomManagerJoinRoom() {
-
-    }
+    public RoomManagerJoinRoom() {}
 
     public void setContext(Context context) {
         this.context = context;
@@ -34,10 +30,7 @@ public class RoomManagerJoinRoom extends AppCompatDialogFragment {
         this.roomManager = roomManager;
     }
 
-    public RoomManagerJoinRoom(RoomManager roomManager) {
-        this.roomManager = roomManager;
-    }
-
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -47,29 +40,23 @@ public class RoomManagerJoinRoom extends AppCompatDialogFragment {
 
         builder.setView(view)
                 .setTitle("Join Room")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Do nothing on cancel
-                    }
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    // Do nothing if Cancel button is clicked
                 })
-                .setPositiveButton("Join", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        joinRoom();
-                    }
-                });
+                .setPositiveButton("Join", (dialog, which) -> joinRoom());
 
         editTextRoomKey = view.findViewById(R.id.editTextRoomKey);
 
         return builder.create();
     }
 
+    // Method to join a room
     private void joinRoom() {
         String desiredRoomKey = editTextRoomKey.getText().toString().trim();
 
         if (!desiredRoomKey.isEmpty()) {
             roomManager.joinRoom(desiredRoomKey);
-//            roomManager.moveToRoomActivity(this.context);
-    }}
+            // roomManager.moveToRoomActivity(this.context);
+        }
+    }
 }
