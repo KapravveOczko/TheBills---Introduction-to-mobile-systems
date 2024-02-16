@@ -1,4 +1,4 @@
-package com.example.thebills;
+package com.example.thebills.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.thebills.R;
 import com.example.thebills.ui.Login;
 
 // displays entry screen (logo)

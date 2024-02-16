@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.thebills.R;
-import com.example.thebills.UserManager;
+import com.example.thebills.user.UserManager;
 import com.example.thebills.bill.BillDataRecycleViewAdapter;
 import com.example.thebills.bill.BillManager;
 import com.example.thebills.remover.Remover;

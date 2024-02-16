@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.thebills.R;
-import com.example.thebills.UserManager;
+import com.example.thebills.user.UserManager;
 import com.example.thebills.room.RoomRecycleViewEvent;
 import com.example.thebills.room.RoomManager;
 import com.example.thebills.room.RoomManagerCreateRoom;

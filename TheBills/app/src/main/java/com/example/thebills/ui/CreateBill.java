@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thebills.R;
-import com.example.thebills.UserManager;
+import com.example.thebills.user.UserManager;
 import com.example.thebills.bill.BillManager;
 import com.example.thebills.bill.CostRecycleViewAdapter;
 import com.google.android.material.textfield.TextInputEditText;

@@ -1,10 +1,14 @@
 package com.example.thebills.room;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -39,7 +43,7 @@ public class RoomManagerRecycleViewAdapter extends RecyclerView.Adapter<RoomMana
         return new RoomManagerRecycleViewAdapter.MyViewHolder(view);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+    // Replace the contents of a view (invoked by the layout manager), allows to copy roomId
     @Override
     public void onBindViewHolder(@NonNull RoomManagerRecycleViewAdapter.MyViewHolder holder, int position) {
         List<String> keys = new ArrayList<>(roomMap.keySet());
@@ -50,6 +54,15 @@ public class RoomManagerRecycleViewAdapter extends RecyclerView.Adapter<RoomMana
         holder.roomKey.setText(key);
 
         holder.cardView.setOnClickListener(v -> listener.onItemClick(holder.getAdapterPosition()));
+
+        holder.roomKey.setOnClickListener(v -> {
+            ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clipData = ClipData.newPlainText("text", key);
+            if (clipboardManager != null) {
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(context,"room Id copied to clipboard", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -62,7 +75,7 @@ public class RoomManagerRecycleViewAdapter extends RecyclerView.Adapter<RoomMana
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView roomName;
-        public TextView roomKey;
+        public Button roomKey;
         public CardView cardView;
 
         // Constructor to initialize views of the ViewHolder
@@ -70,8 +83,9 @@ public class RoomManagerRecycleViewAdapter extends RecyclerView.Adapter<RoomMana
             super(itemView);
 
             roomName = itemView.findViewById(R.id.textViewRoomName);
-            roomKey = itemView.findViewById(R.id.textViewRoomKey);
+            roomKey = itemView.findViewById(R.id.buttonCopyRoomId);
             cardView = itemView.findViewById(R.id.cardViewRecycleViewRooms);
+
         }
     }
 }

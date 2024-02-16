@@ -1,4 +1,4 @@
-package com.example.thebills;
+package com.example.thebills.user;
 
 import androidx.annotation.NonNull;
 
