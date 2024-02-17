@@ -114,7 +114,7 @@ public class CreateBill extends AppCompatActivity {
                         Toast.makeText(context, "total cost is not equal to given cost", Toast.LENGTH_SHORT).show();
                     } else {
                         // Add bill to the database
-                        billManager.addBill(roomKey, adapter.getLocalCostsMap(), currentTime, totalCost, billName.getText().toString(), user.getUid());
+                        billManager.addBill(roomKey, adapter.getLocalCostsMap(), currentTime, totalCost, billName.getText().toString(), owner.getText().toString());
                         new Handler().postDelayed(() -> {
                             Toast.makeText(context, "bill created and added", Toast.LENGTH_SHORT).show();
                             moveToRoom();
