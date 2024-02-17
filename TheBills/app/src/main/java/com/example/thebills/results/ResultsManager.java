@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.thebills.bill.BillManager;
+import com.example.thebills.user.UserManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class ResultsManager {
     private final List<BillTuple> billList = new ArrayList<>(); // List to store bill tuples
     private final List<ResultTuple> resultList = new ArrayList<>(); // List to store result tuples
     private final Set<String> uniqueOwners = new HashSet<>(); // Set to store unique owners
+    private UserManager userManager;
     private int billsReceivedCount = 0; // Counter for received bills
 
     private TextView resultsTextField; // TextView to display results
@@ -26,6 +28,7 @@ public class ResultsManager {
     // Constructor to initialize ResultsManager with a TextView to display results
     public ResultsManager(TextView resultsTextField) {
         this.resultsTextField = resultsTextField;
+        this.userManager = new UserManager();
     }
 
     // Method to retrieve bills for a given room

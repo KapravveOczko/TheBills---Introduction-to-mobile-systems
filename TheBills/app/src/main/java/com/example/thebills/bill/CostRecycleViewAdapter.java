@@ -14,12 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.thebills.R;
+import com.example.thebills.user.UserManager;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 // Adapter class for managing cost-related RecyclerView items
 public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleViewAdapter.MyCostsViewHolder> {
@@ -27,12 +29,14 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
     private final Context context;
     private final Map<String, Boolean> usersMap;
     private final Map<String, Double> localCostsMap;
+    private UserManager userManager;
 
     // Constructor to initialize the adapter with context and user map
     public CostRecycleViewAdapter(Context context, Map<String, Boolean> usersMap) {
         this.context = context;
         this.usersMap = usersMap;
         this.localCostsMap = new HashMap<>();
+        this.userManager = new UserManager();
     }
 
     // Interface for listening to cost changes
@@ -56,13 +60,33 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
         return new CostRecycleViewAdapter.MyCostsViewHolder(view);
     }
 
-    // Method to bind data to the view holder
     @Override
     public void onBindViewHolder(@NonNull MyCostsViewHolder holder, int position) {
         List<String> keys = new ArrayList<>(usersMap.keySet());
-        String key = keys.get(position);
+        String userId = keys.get(position);
 
-        holder.user.setText(key);
+        userManager.getUsername(userId, new UserManager.GetUsernameCallback() {
+            @Override
+            public void onUsernameReceived(String name) {
+                setHolder(holder, name);
+            }
+
+            @Override
+            public void onCancelled(String error) {
+                setHolder(holder, userId);
+            }
+        });
+    }
+
+    // Method to get the item count
+    @Override
+    public int getItemCount() {
+        return usersMap.size();
+    }
+
+    //sets proper holders, depending on gathered info
+    public void setHolder(@NonNull MyCostsViewHolder holder, String name){
+        holder.user.setText(name);
 
         holder.cost.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
@@ -74,24 +98,13 @@ public class CostRecycleViewAdapter extends RecyclerView.Adapter<CostRecycleView
 
                 Double newCost = Double.valueOf(newCostString);
 
-                localCostsMap.put(key, newCost);
+                localCostsMap.put(name, newCost);
 
                 if (costChangeListener != null) {
-                    costChangeListener.onCostChanged(key, newCost);
+                    costChangeListener.onCostChanged(name, newCost);
                 }
             }
         });
-
-        Double localCost = localCostsMap.get(key);
-        if (localCost != null) {
-            holder.cost.setText(String.valueOf(localCost));
-        }
-    }
-
-    // Method to get the item count
-    @Override
-    public int getItemCount() {
-        return usersMap.size();
     }
 
     // View holder class

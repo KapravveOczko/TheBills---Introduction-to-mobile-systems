@@ -110,4 +110,28 @@ public class UserManager {
             }
         });
     }
+
+    // Interface for retrieving a username, returns String
+//    public interface GetUsernameCallbackReturnsString {
+//        String onUsernameStringReceived(String name);
+//        String onCancelled(String error);
+//    }
+//
+//    public void getUsernameAsString(String userId, UserManager.GetUsernameCallbackReturnsString callback) {
+//        appUsersRef.child(userId).child("username").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                String username = dataSnapshot.getValue(String.class);
+//
+//                if (username != null) {
+//                    callback.onUsernameStringReceived(username);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                callback.onCancelled(databaseError.getMessage());
+//            }
+//        });
+//    }
 }
