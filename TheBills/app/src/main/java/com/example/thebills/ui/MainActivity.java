@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         // Initialize context, room manager, and user manager
         context = this;
         roomManager = new RoomManager();
+        roomManager.setContext(this);
         userManager = new UserManager();
 
         // Initialize Firebase Authentication instance and get the current user
@@ -91,10 +92,6 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
             startActivity(intent);
             finish();
         });
-
-        // Set onClickListener for refresh button to recreate activity
-        refresh = findViewById(R.id.buttonRefresh);
-        refresh.setOnClickListener(v -> recreate());
 
         // Set onClickListeners for creating and joining room buttons
         buttonCreateRoom.setOnClickListener(v -> openDialogCreateRoom());
@@ -160,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
 
             @Override
             public void onRoomsReceived(Map<String, String> roomMap) {
+                textViewNullReceived.setVisibility(View.INVISIBLE);
                 progressBar.setVisibility(View.INVISIBLE);
                 keys = new ArrayList<>(roomMap.keySet());
                 RoomManagerRecycleViewAdapter adapter = new RoomManagerRecycleViewAdapter(context, roomMap, MainActivity.this);

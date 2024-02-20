@@ -1,0 +1,65 @@
+{
+  "bills": {
+    "-Nr6s1ibOezpaiB1Loag": {
+      "billName": "bill0",
+      "billOwner": "user0",
+      "costMap": {
+        "user0": 10.1001
+      },
+      "createDate": {
+        "date": 20,
+        "day": 2,
+        "hours": 18,
+        "minutes": 55,
+        "month": 1,
+        "nanos": 766000000,
+        "seconds": 52,
+        "time": 1708455352766,
+        "timezoneOffset": 0,
+        "year": 124
+      },
+      "totalCost": 10.1
+    }
+  },
+  "rooms": {
+    "-Nr6r4Ok11C03nQKJZQm": {
+      "bills": {
+        "-Nr6s1ibOezpaiB1Loag": "bill0"
+      },
+      "createDate": {
+        "date": 20,
+        "day": 2,
+        "hours": 18,
+        "minutes": 51,
+        "month": 1,
+        "nanos": 433000000,
+        "seconds": 58,
+        "time": 1708455118433,
+        "timezoneOffset": 0,
+        "year": 124
+      },
+      "ownerId": "ylzezBWJmzdBvXxLmaOacaiocwb2",
+      "roomId": "-Nr6r4Ok11C03nQKJZQm",
+      "roomName": "room0",
+      "users": {
+        "ylzezBWJmzdBvXxLmaOacaiocwb2": true
+      }
+    }
+  },
+  "usernameList": {
+    "user0": true
+  },
+  "users": {
+    "user0": {
+      "bills": {
+        "-Nr6s1ibOezpaiB1Loag": true
+      }
+    },
+    "ylzezBWJmzdBvXxLmaOacaiocwb2": {
+      "rooms": {
+        "-Nr6r4Ok11C03nQKJZQm": "room0"
+      },
+      "username": "user0"
+    }
+  }
+}

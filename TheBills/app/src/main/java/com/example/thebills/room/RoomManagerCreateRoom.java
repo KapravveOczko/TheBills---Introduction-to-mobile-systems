@@ -58,7 +58,6 @@ public class RoomManagerCreateRoom extends AppCompatDialogFragment {
 
         if (!roomName.isEmpty()) {
             roomManager.createNewRoom(roomName);
-            // roomManager.moveToRoomActivity(this.context);
         }
     }
 }

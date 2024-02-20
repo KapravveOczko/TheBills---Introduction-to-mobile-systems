@@ -7,7 +7,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.thebills.R;
+import com.example.thebills.ui.MainActivity;
 import com.example.thebills.ui.Room;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +47,11 @@ public class RoomManager {
         this.context = context;
     }
 
+    // Method to get the context
+    public Context getContext() {
+        return context;
+    }
+
     // Constructor initializes Firebase instances and database references
     public RoomManager() {
         auth = FirebaseAuth.getInstance();
@@ -54,24 +62,32 @@ public class RoomManager {
 
     // Method to move to the Room activity
     public void moveToRoomActivity(Context context, String roomId) {
-        if (context instanceof AppCompatActivity) {
-            Intent intent = new Intent(context, Room.class);
-            intent.putExtra("roomId",roomId);
-            context.startActivity(intent);
-        }
+//        if (context instanceof AppCompatActivity) {
+//            Intent intent = new Intent(context, Room.class);
+//            intent.putExtra("roomId",roomId);
+//            context.startActivity(intent);
+//        }
+        Intent intent = new Intent(context, Room.class);
+        intent.putExtra("roomId",roomId);
+        context.startActivity(intent);
+
     }
 
     // Method to add a room to the list of rooms for the current user
     public void addRoomToUser(String roomKey, String roomName) {
         Map<String, Object> updateMap = new HashMap<>();
         updateMap.put(roomKey, roomName);
-        appUsersRef.child(currentUser.getUid()).child("rooms").updateChildren(updateMap);
+        appUsersRef.child(currentUser.getUid()).child("rooms").updateChildren(updateMap).addOnCompleteListener(task -> {
+            moveToRoomActivity(getContext(), roomKey);
+        });
     }
 
     // Method to add the current user to the specified room
-    public void addUserToRoom(String roomId) {
+    public void addUserToRoom(String roomId, String roomName) {
         DatabaseReference usersRef = roomsRef.child(roomId).child("users");
-        usersRef.child(currentUser.getUid()).setValue(true);
+        usersRef.child(currentUser.getUid()).setValue(true).addOnCompleteListener(task -> {
+            addRoomToUser(roomId, roomName);
+        });
     }
 
     // Method to create a new room
@@ -90,13 +106,14 @@ public class RoomManager {
 
         roomsRef.child(roomKey).setValue(newRoomData).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                addUserToRoom(roomKey);
-                addRoomToUser(roomKey, roomName);
+                addUserToRoom(roomKey, roomName);
+//                addRoomToUser(roomKey, roomName);
                 Log.d("TheBills: RoomManager", "New room created successfully");
             } else {
                 Log.d("TheBills: RoomManager", "Failed to create new room");
             }
         });
+
     }
 
     // Method to join a room
@@ -110,8 +127,8 @@ public class RoomManager {
                     String roomName = dataSnapshot.child("roomName").getValue(String.class);
 
                     if (roomId != null && roomName != null) {
-                        addRoomToUser(roomId, roomName);
-                        addUserToRoom(roomId);
+                        addUserToRoom(roomId, roomName);
+//                        addRoomToUser(roomId, roomName);
                     }
                 } else {
                     Log.d("TheBills: RoomManager", "joinRoom: Room not found");

@@ -13,12 +13,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="6dp"
         android:contentDescription="your username"
         android:text="username"
+        android:textColor="@color/theBillsColor"
         android:textAlignment="center"
         android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonRefresh"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textWelcome"
@@ -40,29 +39,30 @@
         android:contentDescription="Logout Button"/>
 
     <Button
-        android:id="@+id/buttonCreateRoom"
-        android:layout_width="176dp"
-        android:layout_height="66dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="24dp"
-        android:text="Create new room"
-        app:layout_constraintBottom_toTopOf="@+id/roomRecycleView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonJoinRoom"
-        tools:ignore="MissingConstraints"
-        android:contentDescription="Create Room Button"/>
-
-    <Button
         android:id="@+id/buttonJoinRoom"
         android:layout_width="176dp"
         android:layout_height="66dp"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="35dp"
+        android:contentDescription="Join Room Button"
         android:text="join room"
         app:layout_constraintBottom_toTopOf="@+id/roomRecycleView"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        android:contentDescription="Join Room Button"/>
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/buttonCreateRoom"
+        android:layout_width="176dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="35dp"
+        android:contentDescription="Create Room Button"
+        android:text="Create new room"
+        app:layout_constraintBottom_toTopOf="@+id/roomRecycleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
+        app:layout_constraintStart_toEndOf="@+id/buttonJoinRoom"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textWelcome"
@@ -78,19 +78,20 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roomRecycleView"
-        android:layout_width="374dp"
-        android:layout_height="362dp"
+        android:layout_width="372dp"
+        android:layout_height="379dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="128dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:contentDescription="Room RecyclerView"
         app:layout_constraintBottom_toTopOf="@+id/buttonLogout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewUsername"
-        tools:ignore="MissingConstraints"
-        android:contentDescription="Room RecyclerView"/>
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints" />
 
     <ProgressBar
         android:id="@+id/progressBarRooms"
@@ -103,21 +104,6 @@
         app:layout_constraintTop_toTopOf="@+id/roomRecycleView"
         android:progressTint="@color/theBillsColor"
         android:contentDescription="Rooms Progress Bar"/>
-
-    <Button
-        android:id="@+id/buttonRefresh"
-        android:layout_width="367dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="2dp"
-        android:text="refresh"
-        app:layout_constraintBottom_toTopOf="@+id/buttonCreateRoom"
-        app:layout_constraintEnd_toStartOf="@+id/buttonCreateRoom"
-        app:layout_constraintStart_toEndOf="@+id/buttonJoinRoom"
-        app:layout_constraintTop_toBottomOf="@+id/textViewUsername"
-        android:contentDescription="Refresh Button"/>
 
     <TextView
         android:id="@+id/textViewNullReceived"
