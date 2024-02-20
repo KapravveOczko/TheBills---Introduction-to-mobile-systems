@@ -66,6 +66,11 @@ public class ResultsManager {
             }
 
             @Override
+            public void onNullReceived(){
+
+            }
+
+            @Override
             public void onCancelled(String error) {
                 // Handle cancellation
             }

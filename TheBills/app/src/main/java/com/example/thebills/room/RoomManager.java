@@ -29,7 +29,6 @@ public class RoomManager {
     private static final String ROOMS_REFERENCE = "rooms";
     private static final String USERS_REFERENCE = "users";
 
-    // Firebase Authentication instance and current user
     private final FirebaseAuth auth;
     private FirebaseUser currentUser;
 
@@ -130,6 +129,7 @@ public class RoomManager {
     // Interface for receiving user rooms
     public interface GetUserRoomsCallback {
         void onRoomsReceived(Map<String, String> roomMap);
+        void onNullReceived();
         void onCancelled(String error);
     }
 
@@ -145,6 +145,9 @@ public class RoomManager {
 
                 if (dataMap != null) {
                     callback.onRoomsReceived(dataMap);
+                }
+                else{
+                    callback.onNullReceived();
                 }
             }
 

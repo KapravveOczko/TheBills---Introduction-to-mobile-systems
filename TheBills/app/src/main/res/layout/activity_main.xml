@@ -119,5 +119,18 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewUsername"
         android:contentDescription="Refresh Button"/>
 
+    <TextView
+        android:id="@+id/textViewNullReceived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nothing to show"
+        android:textColor="@color/theBillsColor"
+        android:textSize="20dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/roomRecycleView"
+        app:layout_constraintEnd_toEndOf="@+id/roomRecycleView"
+        app:layout_constraintStart_toStartOf="@+id/roomRecycleView"
+        app:layout_constraintTop_toTopOf="@+id/roomRecycleView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

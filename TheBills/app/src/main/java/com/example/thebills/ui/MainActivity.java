@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
     Button buttonCreateRoom;
     Button buttonJoinRoom;
     TextView textViewUsername;
+    TextView textViewNullReceived;
     ProgressBar progressBar;
     Button refresh;
 
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
         user = auth.getCurrentUser();
 
         // Find views by their IDs
+        textViewNullReceived = findViewById(R.id.textViewNullReceived);
         progressBar = findViewById(R.id.progressBarRooms);
         buttonLogout = findViewById(R.id.buttonLogout);
         buttonCreateRoom = findViewById(R.id.buttonCreateRoom);
@@ -164,6 +166,12 @@ public class MainActivity extends AppCompatActivity implements RoomRecycleViewEv
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public  void  onNullReceived(){
+                progressBar.setVisibility(View.INVISIBLE);
+                textViewNullReceived.setVisibility(View.VISIBLE);
             }
 
             @Override

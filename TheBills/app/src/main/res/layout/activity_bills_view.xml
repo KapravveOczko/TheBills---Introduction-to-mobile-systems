@@ -60,4 +60,17 @@
         tools:ignore="MissingConstraints"
         android:contentDescription="Add Bill Button"/>
 
+    <TextView
+        android:id="@+id/textViewNullBillsReceived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nothing to show"
+        android:textColor="@color/theBillsColor"
+        android:textSize="20dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/billsRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/billsRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/billsRecyclerView"
+        app:layout_constraintTop_toTopOf="@+id/billsRecyclerView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

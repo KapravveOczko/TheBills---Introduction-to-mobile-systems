@@ -138,6 +138,7 @@ public class BillManager {
     // Interface for callback to get room bills
     public interface GetRoomBillsCallback {
         void onBillsReceived(Map<String, String> billMap);
+        void onNullReceived();
         void onCancelled(String error);
     }
 
@@ -154,6 +155,9 @@ public class BillManager {
                 if (dataMap != null) {
                     Log.d("TheBills: BillManager", "Firebase, Data as map: " + dataMap);
                     callback.onBillsReceived(dataMap);
+                }
+                else {
+                    callback.onNullReceived();
                 }
             }
 
